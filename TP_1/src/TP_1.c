@@ -9,14 +9,14 @@ int main() {
 	setbuf(stdout, NULL);
 
 
-	int opcion=0;
-	int flagCalculos=0;
+	int opcion;
+	int flagCalculos;
 
 	char aerolinea;
 
-	float kms=0;
-	float precioAA=0;
-	float precioLatam=0;
+	float kms;
+	float precioAA;
+	float precioLatam;
 	float btc=4606954.55;
 	float debitoAA;
 	float debitoLatam;
@@ -28,6 +28,25 @@ int main() {
 	float unitarioLatam;
 	float diferenciaPrecio;
 
+	float* pKms = &kms;
+ 	float* pPrecioAA = &precioAA;
+	float* pPrecioLatam = &precioLatam;
+	float* pDebitoAA = &debitoAA;
+	float* pDebitoLatam = &debitoLatam;
+	float* pCreditoAA = &creditoAA;
+	float* pCreditoLatam = &creditoLatam;
+	float* pBitcoinAA = &bitcoinAA;
+	float* pBitcoinLatam = &bitcoinLatam;
+	float* pUnitarioAA = &unitarioAA;
+	float* pUnitarioLatam = &unitarioLatam;
+	float* pDiferenciaPrecio = &diferenciaPrecio;
+
+	opcion=0;
+	flagCalculos=0;
+	kms=0;
+	precioAA=0;
+	precioLatam=0;
+
 
 
 
@@ -38,7 +57,7 @@ int main() {
 
 			case 1:
 
-				ingresoKms(&kms);
+				ingresoKms(pKms);
 
 				break;
 
@@ -47,7 +66,7 @@ int main() {
 
 				aerolinea = submenuAerolinea();
 
-				ingresoPrecios (aerolinea, &precioAA, &precioLatam);
+				ingresoPrecios (aerolinea, pPrecioAA, pPrecioLatam);
 
 				break;
 
@@ -56,9 +75,9 @@ int main() {
 
 				if (validarDatosParaCalculo(kms, precioAA, precioLatam)){
 
-					calcularCostos(kms, precioAA, btc, &debitoAA, &creditoAA, &bitcoinAA, &unitarioAA);
-					calcularCostos(kms, precioLatam, btc, &debitoLatam, &creditoLatam, &bitcoinLatam, &unitarioLatam);
-					diferencia (precioLatam, precioAA, &diferenciaPrecio);
+					calcularCostos(kms, precioAA, btc, pDebitoAA, pCreditoAA, pBitcoinAA, pUnitarioAA);
+					calcularCostos(kms, precioLatam, btc, pDebitoLatam, pCreditoLatam, pBitcoinLatam, pUnitarioLatam);
+					diferencia (precioLatam, precioAA, pDiferenciaPrecio);
 					flagCalculos = 1;
 					break;
 				}
@@ -87,9 +106,9 @@ int main() {
 				kms = 7090;
 				precioAA = 162965;
 				precioLatam = 159339;
-				calcularCostos(kms, precioAA, btc, &debitoAA, &creditoAA, &bitcoinAA, &unitarioAA);
-				calcularCostos(kms, precioLatam, btc, &debitoLatam, &creditoLatam, &bitcoinLatam, &unitarioLatam);
-				diferencia (precioLatam, precioAA, &diferenciaPrecio);
+				calcularCostos(kms, precioAA, btc, pDebitoAA, pCreditoAA, pBitcoinAA, pUnitarioAA);
+				calcularCostos(kms, precioLatam, btc, pDebitoLatam, pCreditoLatam, pBitcoinLatam, pUnitarioLatam);
+				diferencia (precioLatam, precioAA, pDiferenciaPrecio);
 				informes (kms, precioAA, precioLatam, debitoAA, debitoLatam, creditoAA, creditoLatam, bitcoinAA, bitcoinLatam, unitarioAA, unitarioLatam, diferenciaPrecio);
 				kms =0;
 				precioAA =0;
