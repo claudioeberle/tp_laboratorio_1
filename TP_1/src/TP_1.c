@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "tp1.h"
+#include "InOutTp1.h"
+#include "ValidacionesTp1.h"
+#include "OperacionesTp1.h"
 
 int main() {
 
