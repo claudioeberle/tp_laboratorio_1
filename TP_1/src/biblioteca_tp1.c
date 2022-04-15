@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "InOutTp1.h"
-#include "ValidacionesTp1.h"
-#include "OperacionesTp1.h"
+#include "biblioteca_tp1.h"
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -44,21 +42,21 @@ int menu(float kms, float precioAA, float precioLatam){
 
 int ingresoKms (float* pKms){
 
-	int todoOK = 0;
+	int check = 0;
 
 	if(pKms != NULL){
 
 	printf("Ingrese los kilómetros de vuelo: ");
 	scanf("%f", pKms);
 
-	todoOK = 1;
+	check = 1;
 
-	return todoOK;
+	return check;
 
 	}
 	else{
 
-	return todoOK;
+	return check;
 
 	}
 }
@@ -68,16 +66,16 @@ int ingresoKms (float* pKms){
 char submenuAerolinea (){
 
 	char aerolinea;
-	int cant;
+	int check;
 
 	do{
 
 		printf("Las opciones de vuelo son Aerolíneas Argentinas (y) y Latam (z).\n");
 		printf("Por favor elija una opción: ");
 		fpurge(stdin);
-		cant = scanf("%c", &aerolinea);
+		check = scanf("%c", &aerolinea);
 
-		}while(cant == 0 || (aerolinea != 'y' && aerolinea != 'z'));
+		}while(check == 0 || (aerolinea != 'y' && aerolinea != 'z'));
 
 	return aerolinea;
 }
@@ -217,6 +215,181 @@ int continuar(){
 	else{
 
 		return opcion;
+	}
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+int validarDatosParaCalculo(float kms, float precioAA, float precioLatam){
+
+	int check = 1;
+
+	if (!validacionCarga(kms)){
+
+		printf("Para poder realizar los cálculos debe informar los Kilómetros correspondientes al viaje. \n");
+		printf("Para dicha tarea utilice la opción \"1\" del Menu de Opciones. \n\n");
+
+		check = 0;
+		return check;
+
+		}else if (!validacionCarga(precioAA)){
+
+			printf("Para poder realizar los cálculos debe informar el precio correspondiente al pasaje por Aerolíneas Argentinas. \n");
+			printf("Para dicha tarea utilice la opción \"2\" del Menu de Opciones.\n");
+			printf("Y luego la opción \"y\" \n");
+
+			check = 0;
+			return check;
+
+			}else if (!validacionCarga(precioLatam)){
+
+				printf("Para poder realizar los cálculos debe informar el precio correspondiente al pasaje por Latam. \n");
+				printf("Para dicha tarea utilice la opción \"2\" del Menu de Opciones.\n");
+				printf("Y luego la opción \"z\" \n");
+
+				check = 0;
+				return check;
+
+			}
+			else{
+
+				return check;
+
+			}
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int validacionCalculos(int flagCalculos){
+
+	int check = 0;
+
+	if (validacionCarga(flagCalculos)){
+
+		check = 1;
+		return check;
+	}
+	else{
+
+		printf("Los datos solicitados son resultado de cálculos que aún no han sido realizados.\n");
+		printf("Para realizar dichos cálculos por favor utilice la opción \"3\" del Menu de Opciones.");
+		return check;
+	}
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int validacionCarga (float variable){
+
+	int validacionCarga;
+
+	if (variable == 0){
+
+		validacionCarga = 0;
+	}
+	else{
+
+		validacionCarga = 1;
+	}
+	return validacionCarga;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+void calcularCostos(float kms, float precio, float btc, float* pDebito, float* pCredito, float* pBitcoin, float* pUnitario){
+
+	*pDebito = operacionPorcentaje(precio, 0, 10);
+	*pCredito = operacionPorcentaje(precio, 1, 25);
+	*pBitcoin = divisa(precio, btc);
+	*pUnitario = valorUnitario(precio, kms);
+
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+float operacionPorcentaje (float numero, int operador, float porcentaje){
+
+	float operacionPorcentaje;
+
+
+	if (operador != 0 && operador != 1){
+
+		printf("Parámetro de operación incorrecto. Ingrese \"0\" para descuento o \"1\" para recargo.");
+
+	} //if
+	else{
+
+		switch (operador){
+
+				case 0:
+				porcentaje = (100-porcentaje) /100;
+				break;
+
+
+				case 1:
+				porcentaje = (porcentaje /100)+1;
+				break;
+
+		}// switch
+	}// else
+
+	operacionPorcentaje = numero * porcentaje;
+	return operacionPorcentaje;
+
+} //operacionPorcentaje
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+float divisa (float precio, float cotizacion){
+
+	float divisa;
+
+	divisa = precio / cotizacion;
+	return divisa;
+
+} //
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+float valorUnitario (float valorTotal, float unidades){
+
+	float valorUnitario;
+
+	valorUnitario = valorTotal / unidades;
+	return valorUnitario;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+void diferencia (float num1, float num2, float* pDiferencia){
+
+	if (num1 > num2){
+
+		*pDiferencia = num1 - num2;
+	}
+	else{
+
+		*pDiferencia = num2 - num1;
+	}
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int cambioFlag(int* pFlag){
+
+	int check = 0;
+
+	if (pFlag != NULL){
+
+		*pFlag = 1 - *pFlag;
+		check = 1;
+		return check;
+
+	}
+	else{
+
+		return check;
 	}
 }
 

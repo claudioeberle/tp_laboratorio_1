@@ -2,16 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "InOutTp1.h"
-#include "ValidacionesTp1.h"
-#include "OperacionesTp1.h"
+#include "biblioteca_tp1.h"
 
 int main() {
 
 	setbuf(stdout, NULL);
 
 
-	int opcion;
+	int salida;
 	int flagCalculos;
 
 	char aerolinea;
@@ -30,6 +28,7 @@ int main() {
 	float unitarioLatam;
 	float diferenciaPrecio;
 
+	int* pFlagCalculos = &flagCalculos;
 	float* pKms = &kms;
  	float* pPrecioAA = &precioAA;
 	float* pPrecioLatam = &precioLatam;
@@ -43,7 +42,7 @@ int main() {
 	float* pUnitarioLatam = &unitarioLatam;
 	float* pDiferenciaPrecio = &diferenciaPrecio;
 
-	opcion=0;
+	salida=0;
 	flagCalculos=0;
 	kms=0;
 	precioAA=0;
@@ -56,20 +55,15 @@ int main() {
 
 		switch (menu(kms, precioAA, precioLatam)){
 
-
 			case 1:
 
 				ingresoKms(pKms);
-
 				break;
-
 
 			case 2:
 
 				aerolinea = submenuAerolinea();
-
 				ingresoPrecios (aerolinea, pPrecioAA, pPrecioLatam);
-
 				break;
 
 
@@ -80,28 +74,29 @@ int main() {
 					calcularCostos(kms, precioAA, btc, pDebitoAA, pCreditoAA, pBitcoinAA, pUnitarioAA);
 					calcularCostos(kms, precioLatam, btc, pDebitoLatam, pCreditoLatam, pBitcoinLatam, pUnitarioLatam);
 					diferencia (precioLatam, precioAA, pDiferenciaPrecio);
-					flagCalculos = 1;
+					cambioFlag(pFlagCalculos);
 					break;
 				}
-
-				break;
+				else{
+					break;
+				}
 
 			case 4:
 
 				if (validacionCalculos(flagCalculos)){
 
-				informes (kms, precioAA, precioLatam, debitoAA, debitoLatam, creditoAA, creditoLatam, bitcoinAA, bitcoinLatam, unitarioAA, unitarioLatam, diferenciaPrecio);
-				opcion = continuar();
-				kms =0;
-				precioAA =0;
-				precioLatam =0;
-				flagCalculos =0;
-				break;
+					informes (kms, precioAA, precioLatam, debitoAA, debitoLatam, creditoAA, creditoLatam, bitcoinAA, bitcoinLatam, unitarioAA, unitarioLatam, diferenciaPrecio);
+					salida = continuar();
+					kms =0;
+					precioAA =0;
+					precioLatam =0;
+					cambioFlag(pFlagCalculos);
+					break;
 
 				}
-
-				break;
-
+				else{
+						break;
+				}
 
 			case 5:
 
@@ -115,20 +110,20 @@ int main() {
 				kms =0;
 				precioAA =0;
 				precioLatam =0;
-				flagCalculos =0;
-				opcion = continuar();
+				cambioFlag(pFlagCalculos);
+				salida = continuar();
 				break;
 
 
 			case 6:
 
-				opcion = 6;
+				salida = 6;
 				break;
 
 			}
 
 
-	}while(opcion != 6);
+	}while(salida != 6);
 
 	printf("\n\n¡Hasta Luego!\n\n");
 	printf("Gracias por utilizar el Sistema. \n\n");
