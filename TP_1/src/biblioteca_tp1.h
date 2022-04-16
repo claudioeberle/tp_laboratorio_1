@@ -20,10 +20,22 @@ int menu (float, float, float);
 
 /// @brief solicita datos de kms al usuario y los asigna a la variable por referencia
 ///
+///@param puntero a la variable kms
+///
 /// @return '1' si la operacion se pudo completar con éxito, '0' si hubo un error que no permitió ejecutar la funcion
 int ingresoKms (float*);
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/// @brief le da la opción al usuario de reingresar el valor de la variable kms
+///
+/// @param puntero a la variable kms
+///
+/// @return '1' si la operacion se pudo completar con éxito, '0' si hubo un error que no permitió ejecutar la funcion
+int reIngresoKms (float*);
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 
 /// @brief presenta al usuario un submenu con las aerolineas disponibles
 ///
@@ -35,11 +47,23 @@ char submenuAerolinea ();
 /// @brief recibe la aerolinea sobre la cual va a operar, pide precio al usuario y lo asigna por referencia a la variable correspondiente
 ///
 /// @param 'y' si va a operar sobre Aerolineas Argentinas, 'z' si va a operar sobre Latam.
-/// @param direccion de memoria de variable de precio de Aerolineas Argentinas.
-/// @param direccion de memoria de variable de precio de Latam.
+/// @param puntero a variable precioAA
+/// @param puntero a variable precioLatam
+/// @param puntero a variable flag que marca si la variable ya tiene precio asignado
 ///
 /// @return '1' si la operacion se pudo completar con éxito, '0' si hubo un error que no permitió ejecutar la funcion
-int ingresoPrecios (char, float*, float*);
+int ingresoPrecios (char, float*, float*, int*);
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/// @brief le da la opcion al usuario de reingresar el valor de las variables precioAA y precioLatam
+///
+/// @param valor de aerolinea elegida por el usuario para operar
+/// @param puntero a variable precioAA
+/// @param puntero a variable precioLatam
+///
+/// @return '1' si la operacion se pudo completar con éxito, '0' si hubo un error que no permitió ejecutar la funcion
+int reingresoPrecios(char, float*, float*);
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -156,14 +180,9 @@ void diferencia (float, float, float*);
 void calcularCostos(float, float, float, float*, float*, float*, float*);
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-
-/// @brief Recibe el valor de un flag y lo cambia
+/// @brief muestra por consola saludo de despedida
 ///
-/// @param Puntero a la direccion de memoria de un flag
-///
-/// @return '1' si la operacion se pudo completar con éxito, '0' si hubo un error que no permitió ejecutar la funcion
-///
-int cambioFlag(int*);
+void saludo (void);
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 

@@ -39,29 +39,73 @@ int menu(float kms, float precioAA, float precioLatam){
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-
 int ingresoKms (float* pKms){
 
-	int check = 0;
+	int todoOK;
+
+	todoOK = 0;
 
 	if(pKms != NULL){
 
-	printf("Ingrese los kilómetros de vuelo: ");
-	scanf("%f", pKms);
+		printf("Ingrese los kilómetros de vuelo: ");
+		scanf("%f", pKms);
 
-	check = 1;
+		todoOK = 1;
 
-	return check;
+	}
+
+	return todoOK;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int reIngresoKms (float* pKms){
+
+	int todoOK;
+	int check;
+	char seleccion;
+
+	todoOK = 0;
+	check = 0;
+
+	if(pKms != NULL){
+
+		printf("Los kilómetros ya han sido ingresados.\n\n");
+		printf("Kilómetros ingresados: %.2f\n\n", *pKms);
+
+		do{
+
+			printf("¿Desea ingresar nuevamente el valor? (s/n): ");
+			fpurge(stdin);
+			check = scanf("%c", &seleccion);
+
+		}while(check == 0);
+
+
+		if (seleccion == 's'){
+
+			do{
+
+				printf("Ingrese los kilómetros de vuelo: ");
+				check = scanf("%f", pKms);
+
+			}while(check == 0);
+
+		} // if reingreso
+
+		todoOK = 1;
+		return todoOK;
 
 	}
 	else{
 
-	return check;
+		return todoOK;
 
 	}
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 
 char submenuAerolinea (){
 
@@ -83,91 +127,168 @@ char submenuAerolinea (){
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 
-int ingresoPrecios (char aerolinea, float* pPrecioAA, float* pPrecioLatam){
+int ingresoPrecios (char aerolinea, float* pPrecioAA, float* pPrecioLatam, int* pFlagReingreso){
 
-	char seleccion;
-	int check = 0;
+	int todoOK;
+	int check;
+
+	todoOK = 0;
+	check = 0;
+
 
 	if (pPrecioAA !=NULL && pPrecioLatam !=NULL){
 
-	switch (aerolinea){
+
+		switch (aerolinea){
 
 				case 'y':
 
-					if (*pPrecioAA != 0){
+						if (!*pPrecioAA){
 
-						printf("El precio de Aerolíneas Argentinas ya ha sido ingresado.\n");
-						printf("Aerolíneas= $%.2f", *pPrecioAA);
+							do{
+								printf("Por favor ingrese el valor del vuelo por Aerolíneas Argentinas: $");
+								check = scanf("%f", pPrecioAA);
 
-						printf("¿Desea ingresar nuevamente el valor?: s/n");
-						fpurge(stdin);
-						scanf("%c", &seleccion);
-
-						if (seleccion == 's'){
-
-							printf("Por favor ingrese el valor del vuelo por Aerolíneas Argentinas: $");
-							scanf("%f", pPrecioAA);
-
-						} // if seleccion
-
-						else{
+							}while(check == 0);
 
 							break;
+						}
+						else{
 
-						} // else seleccion
-
-					}// if reingreso
-
-					else{
-
-						printf("Por favor ingrese el valor del vuelo por Aerolíneas Argentinas: $");
-						scanf("%f", pPrecioAA);
-
-					}//else
-
-				break; //case y
+							*pFlagReingreso= 1;
+							break;
+						}
 
 
 				case 'z':
 
-					if (*pPrecioLatam != 0){
+						if (!*pPrecioLatam){
 
-						printf("El precio de Latam ya ha sido ingresado.\n");
-						printf("Latam= $%.2f", *pPrecioLatam);
-
-						printf("¿Desea ingresar nuevamente el valor?: s/n");
-						fpurge(stdin);
-						scanf("%c", &seleccion);
-
-							if (seleccion == 's'){
-
-											printf("Por favor ingrese el valor del vuelo por Latam: $");
-											scanf("%f", pPrecioLatam);
-
-											} // if seleccion
-
-						}// if reingreso
-
-						else{
+							do{
 
 								printf("Por favor ingrese el valor del vuelo por Latam: $");
-								scanf("%f", pPrecioLatam);
+								check = scanf("%f", pPrecioLatam);
 
-								}//else
+							}while(check == 0);
 
-				break; //case z
-	} // switch
+							break;
+						}
+						else{
 
-	check = 1;
+							*pFlagReingreso = 1;
+							break;
+						}
 
-	} // if todoOK
+		}//switch
+
+		todoOK = 1;
+
+	}// if todoOK
 
 	else{
 
 		printf("ERROR - Operación Inválida");
-	}
 
-	return check;
+	} // else todoOK
+
+
+	return todoOK;
+
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int reingresoPrecios(char aerolinea, float* pPrecioAA, float* pPrecioLatam){
+
+	int todoOK;
+	int check;
+	char seleccion;
+
+	todoOK = 0;
+	check = 0;
+
+	if (pPrecioAA !=NULL && pPrecioLatam !=NULL){
+
+		switch (aerolinea){
+
+					case 'y':
+
+								printf("El precio de Aerolíneas Argentinas ya ha sido ingresado.\n\n");
+								printf("Aerolíneas= $%.2f\n\n", *pPrecioAA);
+
+								do{
+
+									printf("¿Desea ingresar nuevamente el valor? (s/n): ");
+									fpurge(stdin);
+									check = scanf("%c", &seleccion);
+
+								}while(check == 0);
+
+
+								if (seleccion == 's'){
+
+									do{
+
+										printf("Por favor ingrese el valor del vuelo por Aerolíneas Argentinas: $");
+										check = scanf("%f", pPrecioAA);
+
+									}while(check == 0);
+
+								break;
+
+								} // if reingreso
+
+								else{
+
+									break;
+								} // else reingreso
+
+
+					case 'z':
+
+								printf("El precio de Latam ya ha sido ingresado.\n\n");
+								printf("Latam= $%.2f\n\n", *pPrecioLatam);
+
+								do{
+
+									printf("¿Desea ingresar nuevamente el valor? (s/n): ");
+									fpurge(stdin);
+									check = scanf("%c", &seleccion);
+
+								}while(check == 0);
+
+								if (seleccion == 's'){
+
+									do{
+
+										printf("Por favor ingrese el valor del vuelo por Latam: $");
+										check = scanf("%f", pPrecioLatam);
+
+									}while(check == 0);
+
+									break;
+
+								} // if reingreso
+
+								else{
+
+									break;
+
+								} // else reingreso
+
+		}//switch
+
+		todoOK = 1;
+
+	}// if todoOK
+
+	else{
+
+		printf("ERROR - Operación Inválida");
+
+	} // else todoOK
+
+	return todoOK;
 
 }
 
@@ -194,13 +315,14 @@ void informes (float kms,  float precioAA, float precioLatam, float debitoAA, fl
 
 int continuar(){
 
-	int opcion = 6;
+	int opcion;
 	int check;
 	char seleccion;
 
+	opcion = 6;
 
 	do{
-	printf("¿Desea volver a empezar o desea terminar?\n");
+	printf("¿Desea volver a empezar o desea terminar?\n\n");
 	printf("Ingrese 's' para volver a empezar o ingrese 'n' para terminar: ");
 	fpurge(stdin);
 	check = scanf("%c", &seleccion);
@@ -210,12 +332,10 @@ int continuar(){
 	if(seleccion == 's'){
 
 		opcion = 1;
-		return opcion;
 	}
-	else{
 
-		return opcion;
-	}
+	return opcion;
+
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -223,7 +343,9 @@ int continuar(){
 
 int validarDatosParaCalculo(float kms, float precioAA, float precioLatam){
 
-	int check = 1;
+	int check;
+
+	check = 1;
 
 	if (!validacionCarga(kms)){
 
@@ -263,7 +385,9 @@ int validarDatosParaCalculo(float kms, float precioAA, float precioLatam){
 
 int validacionCalculos(int flagCalculos){
 
-	int check = 0;
+	int check;
+
+	check = 0;
 
 	if (validacionCarga(flagCalculos)){
 
@@ -364,33 +488,17 @@ float valorUnitario (float valorTotal, float unidades){
 
 void diferencia (float num1, float num2, float* pDiferencia){
 
-	if (num1 > num2){
+	*pDiferencia = num1 - num2;
 
-		*pDiferencia = num1 - num2;
-	}
-	else{
-
-		*pDiferencia = num2 - num1;
-	}
+	printf ("Los Calculos se realizaron con Éxito.\n\n");
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-int cambioFlag(int* pFlag){
+void saludo (void){
 
-	int check = 0;
-
-	if (pFlag != NULL){
-
-		*pFlag = 1 - *pFlag;
-		check = 1;
-		return check;
-
-	}
-	else{
-
-		return check;
-	}
+	printf("\n\n¡Hasta Luego!\n\n");
+	printf("Gracias por utilizar el Sistema. \n\n");
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

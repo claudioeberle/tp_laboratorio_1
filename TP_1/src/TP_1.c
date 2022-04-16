@@ -11,6 +11,7 @@ int main() {
 
 	int salida;
 	int flagCalculos;
+	int flagReingreso;
 
 	char aerolinea;
 
@@ -28,7 +29,7 @@ int main() {
 	float unitarioLatam;
 	float diferenciaPrecio;
 
-	int* pFlagCalculos = &flagCalculos;
+	int* pFlagReingreso = &flagReingreso;
 	float* pKms = &kms;
  	float* pPrecioAA = &precioAA;
 	float* pPrecioLatam = &precioLatam;
@@ -44,11 +45,10 @@ int main() {
 
 	salida=0;
 	flagCalculos=0;
+	flagReingreso = 0;
 	kms=0;
 	precioAA=0;
 	precioLatam=0;
-
-
 
 
 	do{
@@ -57,15 +57,31 @@ int main() {
 
 			case 1:
 
-				ingresoKms(pKms);
+				if (kms){
+
+					reIngresoKms (pKms);
+				}
+				else{
+
+					ingresoKms(pKms);
+				}
+
 				break;
 
 			case 2:
 
 				aerolinea = submenuAerolinea();
-				ingresoPrecios (aerolinea, pPrecioAA, pPrecioLatam);
-				break;
 
+				ingresoPrecios(aerolinea, pPrecioAA, pPrecioLatam, pFlagReingreso);
+
+				if(flagReingreso){
+
+					reingresoPrecios(aerolinea, pPrecioAA, pPrecioLatam);
+					flagReingreso = 0;
+
+				}
+
+				break;
 
 			case 3: // calcular costos
 
@@ -74,12 +90,10 @@ int main() {
 					calcularCostos(kms, precioAA, btc, pDebitoAA, pCreditoAA, pBitcoinAA, pUnitarioAA);
 					calcularCostos(kms, precioLatam, btc, pDebitoLatam, pCreditoLatam, pBitcoinLatam, pUnitarioLatam);
 					diferencia (precioLatam, precioAA, pDiferenciaPrecio);
-					cambioFlag(pFlagCalculos);
-					break;
+					flagCalculos = 1;
 				}
-				else{
-					break;
-				}
+
+				break;
 
 			case 4:
 
@@ -90,13 +104,11 @@ int main() {
 					kms =0;
 					precioAA =0;
 					precioLatam =0;
-					cambioFlag(pFlagCalculos);
-					break;
+					flagCalculos = 0;
+				}
 
-				}
-				else{
-						break;
-				}
+				break;
+
 
 			case 5:
 
@@ -110,7 +122,7 @@ int main() {
 				kms =0;
 				precioAA =0;
 				precioLatam =0;
-				cambioFlag(pFlagCalculos);
+				flagCalculos = 0;
 				salida = continuar();
 				break;
 
@@ -125,8 +137,7 @@ int main() {
 
 	}while(salida != 6);
 
-	printf("\n\n¡Hasta Luego!\n\n");
-	printf("Gracias por utilizar el Sistema. \n\n");
+	saludo();
 
 	return 0;
 
