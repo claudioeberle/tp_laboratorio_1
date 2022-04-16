@@ -327,7 +327,7 @@ int continuar(){
 	fpurge(stdin);
 	check = scanf("%c", &seleccion);
 
-	}while(seleccion != 's' && seleccion != 'n');
+	}while(!check || (seleccion != 's' && seleccion != 'n'));
 
 	if(seleccion == 's'){
 
