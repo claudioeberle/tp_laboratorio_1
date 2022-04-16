@@ -42,13 +42,19 @@ int menu(float kms, float precioAA, float precioLatam){
 int ingresoKms (float* pKms){
 
 	int todoOK;
+	int check;
 
 	todoOK = 0;
+	check = 0;
 
 	if(pKms != NULL){
 
+		do{
 		printf("Ingrese los kilómetros de vuelo: ");
-		scanf("%f", pKms);
+		fpurge(stdin);
+		check = scanf("%f", pKms);
+
+		}while(!check);
 
 		todoOK = 1;
 
@@ -79,7 +85,7 @@ int reIngresoKms (float* pKms){
 			fpurge(stdin);
 			check = scanf("%c", &seleccion);
 
-		}while(check == 0);
+		}while(!check || (seleccion != 's' && seleccion != 'n'));
 
 
 		if (seleccion == 's'){
@@ -87,9 +93,10 @@ int reIngresoKms (float* pKms){
 			do{
 
 				printf("Ingrese los kilómetros de vuelo: ");
+				fpurge(stdin);
 				check = scanf("%f", pKms);
 
-			}while(check == 0);
+			}while(!check);
 
 		} // if reingreso
 
@@ -119,7 +126,7 @@ char submenuAerolinea (){
 		fpurge(stdin);
 		check = scanf("%c", &aerolinea);
 
-		}while(check == 0 || (aerolinea != 'y' && aerolinea != 'z'));
+		}while(!check || (aerolinea != 'y' && aerolinea != 'z'));
 
 	return aerolinea;
 }
@@ -147,9 +154,10 @@ int ingresoPrecios (char aerolinea, float* pPrecioAA, float* pPrecioLatam, int* 
 
 							do{
 								printf("Por favor ingrese el valor del vuelo por Aerolíneas Argentinas: $");
+								fpurge(stdin);
 								check = scanf("%f", pPrecioAA);
 
-							}while(check == 0);
+							}while(!check);
 
 							break;
 						}
@@ -167,9 +175,10 @@ int ingresoPrecios (char aerolinea, float* pPrecioAA, float* pPrecioLatam, int* 
 							do{
 
 								printf("Por favor ingrese el valor del vuelo por Latam: $");
+								fpurge(stdin);
 								check = scanf("%f", pPrecioLatam);
 
-							}while(check == 0);
+							}while(!check);
 
 							break;
 						}
@@ -222,7 +231,7 @@ int reingresoPrecios(char aerolinea, float* pPrecioAA, float* pPrecioLatam){
 									fpurge(stdin);
 									check = scanf("%c", &seleccion);
 
-								}while(check == 0);
+								}while(!check || (seleccion != 's' && seleccion != 'n'));
 
 
 								if (seleccion == 's'){
@@ -230,9 +239,10 @@ int reingresoPrecios(char aerolinea, float* pPrecioAA, float* pPrecioLatam){
 									do{
 
 										printf("Por favor ingrese el valor del vuelo por Aerolíneas Argentinas: $");
+										fpurge(stdin);
 										check = scanf("%f", pPrecioAA);
 
-									}while(check == 0);
+									}while(!check);
 
 								break;
 
@@ -255,16 +265,17 @@ int reingresoPrecios(char aerolinea, float* pPrecioAA, float* pPrecioLatam){
 									fpurge(stdin);
 									check = scanf("%c", &seleccion);
 
-								}while(check == 0);
+								}while(!check || (seleccion != 's' && seleccion != 'n'));
 
 								if (seleccion == 's'){
 
 									do{
 
 										printf("Por favor ingrese el valor del vuelo por Latam: $");
+										fpurge(stdin);
 										check = scanf("%f", pPrecioLatam);
 
-									}while(check == 0);
+									}while(!check);
 
 									break;
 
@@ -398,6 +409,7 @@ int validacionCalculos(int flagCalculos){
 
 		printf("Los datos solicitados son resultado de cálculos que aún no han sido realizados.\n");
 		printf("Para realizar dichos cálculos por favor utilice la opción \"3\" del Menu de Opciones.");
+
 		return check;
 	}
 }
