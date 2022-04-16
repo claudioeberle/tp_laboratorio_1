@@ -1,3 +1,7 @@
+/* autor: Claudio Emanuel Eberle
+ * DNI: 31597087
+ * 1ºG
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -502,15 +506,16 @@ void diferencia (float num1, float num2, float* pDiferencia){
 
 	*pDiferencia = num1 - num2;
 
-	printf ("Los Calculos se realizaron con Éxito.\n\n");
+	printf ("¡Los Calculos se realizaron con Éxito!\n\n");
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 void saludo (void){
 
-	printf("\n\n¡Hasta Luego!\n\n");
-	printf("Gracias por utilizar el Sistema. \n\n");
+	printf("\n\nGracias por utilizar el Sistema. \n\n");
+	printf("¡Hasta Luego!\n\n");
+
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

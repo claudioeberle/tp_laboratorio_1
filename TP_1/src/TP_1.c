@@ -1,3 +1,7 @@
+/* autor: Claudio Emanuel Eberle
+ * DNI: 31597087
+ * 1ºG
+ */
 
 #include <stdio.h>
 #include <stdlib.h>

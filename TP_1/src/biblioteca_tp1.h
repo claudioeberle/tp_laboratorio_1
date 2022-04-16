@@ -1,3 +1,8 @@
+/* autor: Claudio Emanuel Eberle
+ * DNI: 31597087
+ * 1ºG
+ */
+
 #ifndef BIBLIOTECA_TP1_H_
 #define BIBLIOTECA_TP1_H_
 
