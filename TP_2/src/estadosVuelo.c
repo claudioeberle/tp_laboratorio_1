@@ -54,10 +54,10 @@ int listarEstados (eEstado estados[], int max_estados){
 
 	if(estados != NULL && max_estados > 0){
 
-		printf("\n    Estados     \n");
-		printf("------------------\n");
-		printf(" ID     Nombre    \n");
-		printf("------------------\n");
+		printf("\n Estados de Vuelo     \n");
+		printf("--------------------\n");
+		printf(" ID      Nombre    \n");
+		printf("--------------------\n");
 		for (int i = 0; i < max_estados; i++){
 
 			mostrarEstadoIndice(estados, max_estados, i);
@@ -78,7 +78,7 @@ int cargarDescripcionEstado(eEstado estados[], int max_estados, int idEstado, ch
 
             if( estados[i].id == idEstado){
 
-                strncpy(descEstado, estados[i].descripcion, max_estados);
+                strncpy(descEstado, estados[i].descripcion, 10);
                 todoOk = 1;
                 break;
             }

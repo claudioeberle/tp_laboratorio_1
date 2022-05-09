@@ -32,7 +32,6 @@ int cargaString (char string[], int max_string, char* mensaje, char* mensajeErro
 int cargarEstadoVuelo(int* pEstadoVuelo, eEstado estados[], int max_estados);
 void mostrarPasajero(ePas pasajero, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
 void mostrarPasajeroFila(ePas pasajero, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
-int listarPasajeros(ePas pasajeros[], int max_pasajeros, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
 int salir(char*);
 void despedida (void);
 int hardcodearPasajeros (ePas pasajeros[], int max_pasajeros, int* pProximoId);
@@ -40,6 +39,13 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 int menuModificar(void);
 int buscarPasajeroId(ePas pasajeros[], int max_pasajeros, int idPasajero, int* pIndice);
 int bajaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_apellido, int max_codigos, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
+int ordenarPasajerosId(ePas pasajeros[], int max_pasajeros, int criterio);
+int ordenarPasajerosApellidoTipo(ePas pasajeros[], int max_pasajeros, int criterio);
+int ordenarPasajerosCodigoEstado(ePas pasajeros[], int max_pasajeros, int criterio);
+int informesPasajeros(ePas pasajeros[], int max_pasajeros, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
 
+//informes
+
+int listarPasajeros(ePas pasajeros[], int max_pasajeros, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
 
 

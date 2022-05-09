@@ -100,8 +100,8 @@ int altaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_ap
 		max_nombre > 0 && max_apellido > 0 && max_codigos > 0 && max_categorias > 0 && max_estados > 0 &&
 		buscarLibre(pasajeros, max_pasajeros, &indice))
 	{
-		printf("%d\n\n", buscarLibre(pasajeros, max_pasajeros, &indice));
 
+				printf("\033[2J");
 				printf("\n--------------------------");
 				printf("\n  Alta   de  Pasajero     ");
 				printf("\n--------------------------\n");
@@ -133,23 +133,23 @@ int altaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_ap
 				fpurge(stdin);
 				scanf("%c", &confirmacion);
 
-				if(confirmacion == 's'){
+				if(confirmacion == 's' || confirmacion == 'S'){
 
 					pasajeros[indice] = nuevoPasajero;
 
 					(*pProximoId)++;
 
-					printf("\n***************");
-					printf("\nCarga exitosa.\n");
-					printf("\n***************");
+					printf("\n+^+^+^+^+^+^+^+^+^+");
+					printf("\n  Carga exitosa.\n");
+					printf("+^+^+^+^+^+^+^+^+^+\n");
 
 					retorno = 1;
 				}
 				else{
 
-					printf("\n******************");
-					printf("\nCarga cancelada.\n");
-					printf("\n******************");
+					printf("\n+^+^+^+^+^+^+^+^+^+");
+					printf("\n  Carga cancelada.\n");
+					printf("+^+^+^+^+^+^+^+^+^+\n");
 
 				}
 	}
@@ -317,13 +317,13 @@ void mostrarPasajero(ePas pasajero, eCategoria categorias[], int max_categorias,
 
 void mostrarPasajeroFila(ePas pasajero, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados)
 {
-	char estado[10];
-	char categoria[30];
+	char estado[20];
+	char categoria[40];
 
 	cargarDescripcionEstado(estados, max_estados, pasajero.estadoVuelo, estado);
 	cargarDescripcionCategoria(categorias, max_categorias, pasajero.tipoPasajero, categoria);
 
-    printf(" %4d    %.20s             %5s    %.2f    %8s  %s  %s \n",
+    printf(" %4d    %17s    %17s     $%10.2f      %8s       %9s     %9s\n",
 
            pasajero.id,
            pasajero.nombre,
@@ -344,10 +344,12 @@ int listarPasajeros(ePas pasajeros[], int max_pasajeros, eCategoria categorias[]
     if( pasajeros != NULL && categorias != NULL && estados != NULL && max_pasajeros > 0 && max_categorias > 0 && max_estados > 0)
     {
 
-        printf("\n        Listado de Pasajeros      \n");
-        printf("-----------------------------------------------------------------------------\n");
-        printf("  id     nombre        Apellido       Precio     Vuelo   Categoria    Estado\n");
-        printf("-----------------------------------------------------------------------------\n");
+
+        printf("\n LISTADO DE PASAJEROS      \n");
+        printf("-------------------------------------------------------------------------------------------------------------\n");
+        printf("  id             nombre                Apellido       Precio          Vuelo         Categoria        Estado\n");
+        printf("-------------------------------------------------------------------------------------------------------------\n");
+
         for(int i=0; i < max_pasajeros; i++)
         {
             if(pasajeros[i].isEmpty == 0)
@@ -358,7 +360,7 @@ int listarPasajeros(ePas pasajeros[], int max_pasajeros, eCategoria categorias[]
         }
         if(flag)
         {
-            printf("     No hay empleados en el sistema\n");
+            printf("No hay empleados en el sistema\n");
         }
         else{
 
@@ -391,11 +393,11 @@ int salir(char* var){
 				fpurge(stdin);
 				scanf("%c", var);
 
-			}while(!isalpha(*var) || (*var != 's' && *var != 'n'));
+			}while(!isalpha(*var) || (*var != 's' && *var != 'n' && *var != 'S' && *var != 'N'));
 
 		}
 
-		if(*var == 's'){
+		if(*var == 's' || *var != 'S'){
 
 			despedida();
 		}
@@ -424,6 +426,7 @@ void bienvenida (){
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 void despedida (){
 
+	printf("\033[2J");
 	printf("\n\nGracias por utilizar SISPAS®. \n\n");
 	printf("¡Hasta Luego!\n\n");
 
@@ -448,8 +451,8 @@ int hardcodearPasajeros (ePas pasajeros[], int max_pasajeros, int* pProximoId){
 				{0, "Patricia", "Palmer", 192539.45, "FGH285PA", 103, 1, 0},
 				{0, "Andrea Rosalia", "Del Boca", 182516.17, "EZE761MC", 103, 1, 0},
 				{0, "Roberto Carlos", "Mansela", 129231.00, "AJN339BA", 102, 1, 0},
-				{0, "Monica", "Guido", 199946.25, "JFK012NY", 102, 0, 0},
-				{0, "Gustavo Ariel", "Bermudez", 271903.58, "BCN761BC", 101, 0, 0},
+				{0, "Monica", "Guido", 199946.25, "JFK012NY", 102, 3, 0},
+				{0, "Gustavo Ariel", "Bermudez", 271903.58, "BCN761BC", 101, 3, 0},
 				{0, "German", "Kraus", 78125.93, "BRU772JK", 102, 1, 0},
 				{0, "Cristina", "Morena", 192221.00, "EZE002BA", 103, 2, 0}
 		};
@@ -457,8 +460,6 @@ int hardcodearPasajeros (ePas pasajeros[], int max_pasajeros, int* pProximoId){
 		for( int i = 0; i < 10; i++){
 
 			indice = 0;
-
-			printf(buscarLibre(pasajeros, max_pasajeros, &indice));
 
 			if(buscarLibre(pasajeros, max_pasajeros, &indice) == 1){
 
@@ -472,6 +473,7 @@ int hardcodearPasajeros (ePas pasajeros[], int max_pasajeros, int* pProximoId){
 		}
 
 		retorno = 1;
+		printf("\033[2J");
 		printf("Se agregaron %d pasajeros al sistema.", contador);
 	}
 
@@ -497,9 +499,14 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 	if(pasajeros != NULL && categorias != NULL && estados != NULL && max_pasajeros > 0 &&
 			max_nombre > 0 && max_apellido > 0 && max_codigos > 0 && max_categorias > 0 && max_estados > 0)
 	{
+		printf("\033[2J");
+		printf("\n--------------------------------\n");
+		printf("  Modificacion   de   Pasajero  \n");
+		printf("-------------------------------- \n\n");
 		if(listarPasajeros(pasajeros, max_pasajeros, categorias, max_categorias, estados, max_estados)){
 			get_int("\nElija el ID del pasajero que quiere modificar: ", "Dato incorrecto", 0, 2001, &pasId);
 			if(buscarPasajeroId(pasajeros, max_pasajeros, pasId, &indice) == 1){
+
 
 				do{
 
@@ -518,10 +525,10 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 									if(confirmacion == 's'){
 
 										strncpy(pasajeros[indice].nombre, pasNombre, 30);
-										printf("\nModificación exitosa.\n");
+										printf("\n->->-> Modificación exitosa <-<-<-\n");
 									}
 									else{
-										printf("\nModificación cancelada.\n");
+										printf("\n->->-> Modificación cancelada <-<-<-\n");
 									}
 								}
 								break;
@@ -539,10 +546,10 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 									if(confirmacion == 's'){
 
 										strncpy(pasajeros[indice].apellido, pasApellido, 30);
-										printf("\nModificación exitosa.\n");
+										printf("\n->->-> Modificación exitosa <-<-<-\n");
 									}
 									else{
-										printf("\nModificación cancelada.\n");
+										printf("\n->->-> Modificación cancelada <-<-<-\n");
 									}
 								}
 
@@ -561,10 +568,10 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 									if(confirmacion == 's'){
 
 										pasajeros[indice].precio = pasPrecio;
-										printf("\nModificación exitosa.\n");
+										printf("\n->->-> Modificación exitosa <-<-<-\n");
 									}
 									else{
-										printf("\nModificación cancelada.\n");
+										printf("\n->->-> Modificación cancelada <-<-<-\n");
 									}
 								}
 								break;
@@ -582,10 +589,10 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 									if(confirmacion == 's'){
 
 										strncpy(pasajeros[indice].codigoVuelo, pasCodigo, 10);
-										printf("\nModificación exitosa.\n");
+										printf("\n->->-> Modificación exitosa <-<-<-\n");
 									}
 									else{
-										printf("\nModificación cancelada.\n");
+										printf("\n->->-> Modificación cancelada <-<-<-\n");
 									}
 								}
 
@@ -606,10 +613,10 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 									if(confirmacion == 's'){
 
 										pasajeros[indice].tipoPasajero = pasCategoria;
-										printf("\n*****Modificación exitosa*****\n");
+										printf("\n->->-> Modificación exitosa <-<-<-\n");
 									}
 									else{
-										printf("\n*****Modificación cancelada*****\n");
+										printf("\n->->-> Modificación cancelada <-<-<-\n");
 									}
 								}
 
@@ -618,6 +625,7 @@ int modificarPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int m
 							case 6:
 
 								salir = 's';
+								printf("\033[2J");
 								break;
 
 					}
@@ -710,8 +718,9 @@ int bajaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_ap
 	if(pasajeros != NULL && categorias != NULL && estados != NULL && max_pasajeros > 0 &&
 			max_nombre > 0 && max_apellido > 0 && max_codigos > 0 && max_categorias > 0 && max_estados > 0)
 	{
+		printf("\033[2J");
 		printf("\n--------------------------------\n");
-		printf("    Baja       de      Pasajero  \n");
+		printf("  Baja       de      Pasajero  \n");
 		printf("-------------------------------- \n\n");
 		if(listarPasajeros(pasajeros, max_pasajeros, categorias, max_categorias, estados, max_estados)){
 			get_int("\nElija el ID del pasajero que quiere dar de baja: ", "Dato incorrecto", 0, 2001, &pasId);
@@ -725,16 +734,241 @@ int bajaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_ap
 				if(confirmacion == 's'){
 
 					pasajeros[indice].isEmpty = 1;
-					printf("\n*****Baja exitosa*****");
+					printf("\n->->-> Baja exitosa <-<-<-");
 					retorno = 1;
 				}
 				else{
 
-					printf("\n*****Baja cancelada*****");
+					printf("\n->->-> Baja cancelada <-<-<-");
 				}
 
 			}
 		}
 	}
 	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int menuInformes (){
+
+	int opcion = 0;
+	int check = 0;
+
+
+	do{
+
+		printf("\n--------------------------------\n");
+		printf("            INFORMES             \n");
+		printf("-------------------------------- \n\n");
+		printf("1. LISTADO DE PASAJEROS (ID)\n");
+		printf("2. LISTADO DE PASAJEROS (APELLIDO / TIPO DE PASAJERO)\n");
+		printf("3. LISTADO DE PASAJEROS (CÓDIGO DE VUELO / ESTADO DE VUELO)\n");
+		printf("4. SALIR\n");
+
+		printf("\nOPCION: ");
+		fpurge(stdin);
+		check = scanf("%d", &opcion);
+		printf("\n\n");
+
+
+		if(opcion <1 || opcion >4){
+
+			printf("OPCIÓN INCORRECTA. Por favor ingrese una opción válida.\n\n");
+		}
+
+
+		}while(check == 0 && (opcion <1 || opcion >4));
+
+		return opcion;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int informesPasajeros(ePas pasajeros[], int max_pasajeros, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados)
+{
+	int retorno = 0;
+	char salir;
+	int criterio;
+
+
+
+	if(pasajeros != NULL && categorias != NULL && estados != NULL && max_pasajeros > 0 && max_categorias > 0 && max_estados > 0)
+	{
+				do{
+
+					switch(menuInformes()){
+
+							case 1:
+
+								printf("Criterios:\n\nASCENDENTE: 1\nDESCENDENTE: 0\n\n");
+								if(get_int("Criterio: ", "**Dato Incorrecto**\n", -1, 2, &criterio))
+								{
+									ordenarPasajerosId(pasajeros, max_pasajeros, criterio);
+									listarPasajeros(pasajeros, max_pasajeros, categorias, max_categorias, estados, max_estados);
+								}
+								break;
+
+							case 2:
+
+								printf("Criterios:\n\nASCENDENTE: 1\nDESCENDENTE: 0\n\n");
+								if(get_int("Criterio: ", "**Dato Incorrecto**\n", -1, 2, &criterio))
+								{
+									ordenarPasajerosApellidoTipo(pasajeros, max_pasajeros, criterio);
+									listarPasajeros(pasajeros, max_pasajeros, categorias, max_categorias, estados, max_estados);
+								}
+								break;
+
+							case 3:
+
+								printf("Criterios:\n\nASCENDENTE: 1\nDESCENDENTE: 0\n\n");
+								if(get_int("Criterio: ", "**Dato Incorrecto**\n", -1, 2, &criterio))
+								{
+									ordenarPasajerosCodigoEstado(pasajeros, max_pasajeros, criterio);
+									listarPasajeros(pasajeros, max_pasajeros, categorias, max_categorias, estados, max_estados);
+								}
+								break;
+
+							case 4:
+
+								salir = 's';
+								printf("\033[2J");
+								break;
+
+					}
+
+				}while(salir != 's');
+
+
+	retorno = 1;
+	}
+
+	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int ordenarPasajerosId(ePas pasajeros[], int max_pasajeros, int criterio)
+{
+    int retorno = 0;
+    ePas auxPas;
+
+    if( pasajeros != NULL && max_pasajeros > 0)
+    {
+        for(int i=0; i < max_pasajeros - 1; i++)
+        {
+            for(int j= i+1; j < max_pasajeros; j++)
+            {
+            	if(criterio == 1)
+            	{
+					if(pasajeros[i].id > pasajeros[j].id)
+					{
+						auxPas = pasajeros[i];
+						pasajeros[i] = pasajeros[j];
+						pasajeros[j] = auxPas;
+					}
+            	}
+
+            	else
+            	{
+            		if(pasajeros[i].id < pasajeros[j].id)
+					{
+						auxPas = pasajeros[i];
+						pasajeros[i] = pasajeros[j];
+						pasajeros[j] = auxPas;
+
+
+					}
+            	}
+            }
+        }
+        retorno = 1;
+    }
+    return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int ordenarPasajerosApellidoTipo(ePas pasajeros[], int max_pasajeros, int criterio)
+{
+    int retorno = 0;
+    ePas auxPas;
+
+    if( pasajeros != NULL && max_pasajeros > 0)
+    {
+        for(int i=0; i < max_pasajeros - 1; i++)
+        {
+            for(int j= i+1; j < max_pasajeros; j++)
+            {
+            	if(criterio == 1)
+            	{
+            		if((pasajeros[i].tipoPasajero == pasajeros[j].tipoPasajero && strcmp(pasajeros[i].apellido,pasajeros[j].apellido) > 0)
+						||(pasajeros[i].tipoPasajero != pasajeros[j].tipoPasajero && (pasajeros[i].tipoPasajero > pasajeros[j].tipoPasajero)))
+					{
+						auxPas = pasajeros[i];
+						pasajeros[i] = pasajeros[j];
+						pasajeros[j] = auxPas;
+					}
+            	}
+
+            	else
+            	{
+            		if((pasajeros[i].tipoPasajero == pasajeros[j].tipoPasajero && strcmp(pasajeros[i].apellido,pasajeros[j].apellido) < 0)
+						||(pasajeros[i].tipoPasajero != pasajeros[j].tipoPasajero && (pasajeros[i].tipoPasajero < pasajeros[j].tipoPasajero)))
+					{
+						auxPas = pasajeros[i];
+						pasajeros[i] = pasajeros[j];
+						pasajeros[j] = auxPas;
+
+
+					}
+            	}
+            }
+        }
+        retorno = 1;
+    }
+    return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int ordenarPasajerosCodigoEstado(ePas pasajeros[], int max_pasajeros, int criterio)
+{
+    int retorno = 0;
+    ePas auxPas;
+
+    if( pasajeros != NULL && max_pasajeros > 0)
+    {
+        for(int i=0; i < max_pasajeros - 1; i++)
+        {
+            for(int j= i+1; j < max_pasajeros; j++)
+            {
+            	if(criterio == 1)
+            	{
+            		if((pasajeros[i].estadoVuelo == pasajeros[j].estadoVuelo && strcmp(pasajeros[i].codigoVuelo,pasajeros[j].codigoVuelo) > 0)
+						||(pasajeros[i].estadoVuelo != pasajeros[j].estadoVuelo && (pasajeros[i].estadoVuelo > pasajeros[j].estadoVuelo)))
+					{
+						auxPas = pasajeros[i];
+						pasajeros[i] = pasajeros[j];
+						pasajeros[j] = auxPas;
+					}
+            	}
+
+            	else
+            	{
+            		if((pasajeros[i].estadoVuelo == pasajeros[j].estadoVuelo && strcmp(pasajeros[i].codigoVuelo,pasajeros[j].codigoVuelo) < 0)
+						||(pasajeros[i].estadoVuelo != pasajeros[j].estadoVuelo && (pasajeros[i].estadoVuelo < pasajeros[j].estadoVuelo)))
+					{
+						auxPas = pasajeros[i];
+						pasajeros[i] = pasajeros[j];
+						pasajeros[j] = auxPas;
+
+
+					}
+            	}
+            }
+        }
+        retorno = 1;
+    }
+    return retorno;
 }

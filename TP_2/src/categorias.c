@@ -101,7 +101,7 @@ int cargarDescripcionCategoria(eCategoria categorias[], int max_categorias, int 
 
 			if( categorias[i].id == idCategoria){
 
-				strncpy(descCategoria, categorias[i].descripcion, max_categorias);
+				strncpy(descCategoria, categorias[i].descripcion, 30);
 				retorno = 1;
 				break;
 			}

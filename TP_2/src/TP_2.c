@@ -14,9 +14,7 @@
 #define MAX_CATEGORIAS 3
 #define MAX_ESTADOS 3
 
-
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-
 
 int main() {
 
@@ -25,8 +23,8 @@ int main() {
 	ePas pasajeros[MAX_PASAJEROS];
 	inicilizarPasajeros(pasajeros, MAX_PASAJEROS);
 	eCategoria categorias[MAX_CATEGORIAS] = {
-			{101, "First"},
-			{102, "Business"},
+			{101, "Primera"},
+			{102, "Ejecutivo"},
 			{103, "Turista"}
 	};
 
@@ -67,6 +65,7 @@ int main() {
 
 				case 4:
 
+					informesPasajeros(pasajeros, MAX_PASAJEROS, categorias, MAX_CATEGORIAS, estados, MAX_ESTADOS);
 
 					break;
 
