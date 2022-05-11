@@ -102,13 +102,16 @@ int get_code(char* mensaje, char* mensajeError, char codigo[], int max_codigos){
 			fpurge(stdin);
 			fgets(string, max_codigos, stdin);
 
-			if(quitarEnter (string, max_codigos)){
+			if(quitarEnter (string, max_codigos) && strlen(string) == 8){
 
 				for(int i = 0; string[i] != '\0'; i++){
 
 					flag = 0;
 
-					if( (strlen(string) > max_codigos) || (!isalpha(string[i]) && !isdigit(string[i]))){
+					if( (i >= 0 && i <= 2 && !isalpha(string[i])) ||
+						(i >= 6 && i <= 7 && !isalpha(string[i])) ||
+						(i >= 3 && i <= 5 && !isdigit(string[i])))
+					{
 
 						flag = 1;
 						printf("%s", mensajeError);
@@ -120,13 +123,12 @@ int get_code(char* mensaje, char* mensajeError, char codigo[], int max_codigos){
 			else{
 
 				flag = 1;
+				printf("%s", mensajeError);
 				reintentos--;
-				retorno = -1;
 			}
 
 			if(!flag){
 
-				retorno = 1;
 				for(int i = 0; string[i] != '\0'; i++){
 
 					if(isalpha(string[i])){
@@ -135,6 +137,7 @@ int get_code(char* mensaje, char* mensajeError, char codigo[], int max_codigos){
 					}
 				}
 				strncpy(codigo, string, max_codigos);
+				retorno = 1;
 				break;
 			}
 
@@ -271,3 +274,74 @@ int quitarEnter (char string[], int max_string){
 	}
 	return retorno;
 }
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int capitalString (char string[]){
+
+		int retorno = 0;
+
+		if( string != NULL){
+
+			for (int i = 0; string[i] != '\0'; i++){
+
+
+					string[i] = tolower(string[i]);
+			}
+
+			string [0] = toupper(string[0]);
+
+			for (int i = 0; string[i] != '\0'; i++){
+
+				if (string[i] == ' '){
+
+					string[i+1] = toupper(string[i+1]);
+				}
+			}
+
+			retorno = 1;
+		}
+	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int getCharacter(char* mensaje, char* mensajeError, char* character, char min, char max){
+
+	int retorno = 0;
+	char opcion;
+	int check;
+	int reintentos = 2;
+
+	if(character != NULL &&
+	  ((min >= 'a' && min <= 'z') || (min >= 'A' && min <= 'Z')) &&
+	  ((max >= 'a' && max <= 'z')|| (max >= 'A' && max <= 'Z')))
+	{
+		do{
+		printf("%s", mensaje);
+		fpurge(stdin);
+		check = scanf("%c", &opcion);
+
+		opcion = tolower(opcion);
+		min = tolower(min);
+		max = tolower(max);
+
+		if(opcion >= min && opcion <= max && check){
+
+			*character = opcion;
+			retorno = 1;
+			break;
+		}
+		else{
+
+			printf("%s", mensajeError);
+			reintentos--;
+		}
+		}while(reintentos > 0);
+	}
+
+	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+

@@ -18,4 +18,6 @@ int get_code(char* mensaje, char* mensajeError, char codigo[], int max_codigos);
 int get_float(char* mensaje, char* mensajeError, int min, int max, float* pNumero);
 int esFloat(char string[], int max_string);
 int quitarEnter (char string[], int max_string);
+int capitalString (char string[]);
+int getCharacter(char* mensaje, char* mensajeError, char* character, char min, char max);
 

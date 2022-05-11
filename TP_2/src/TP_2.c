@@ -83,7 +83,7 @@ int main() {
 				}
 
 
-		}while(salida != 's');
+		}while(salida != 's' && salida != 'S');
 
 
 	return 0;
