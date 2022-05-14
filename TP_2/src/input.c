@@ -33,7 +33,7 @@ int get_int(char* mensaje, char* mensajeError, int min, int max, int* pNumero){
 
 				auxNum = atoi(string);
 
-				if(auxNum > min && auxNum < max){
+				if(auxNum >= min && auxNum <= max){
 
 					*pNumero = auxNum;
 					retorno = 1;
@@ -344,4 +344,3 @@ int getCharacter(char* mensaje, char* mensajeError, char* character, char min, c
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-

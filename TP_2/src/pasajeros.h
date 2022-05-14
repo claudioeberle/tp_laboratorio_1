@@ -22,8 +22,9 @@ typedef struct{
 
 void bienvenida (void);
 int menu(void);
-int inicilizarPasajeros(ePas pasajeros[], int max_pasajeros);
+int inicializarPasajeros(ePas pasajeros[], int max_pasajeros);
 int buscarLibre(ePas pasajeros[], int max_pasajeros, int* pIndice);
+int agregarPasajero (ePas pasajeros[], int max_pasajeros, int id, char nombre[], char apellido[], float precio, int tipoPasajero, char codigoVuelo[], int estadoVuelo, int indice);
 int altaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_apellido, int max_codigos, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados, int* pProximoId);
 int cargarCategoriaPasajero(int* pCategoria, eCategoria categorias[], int max_categorias);
 int cargarCodigoVuelo(char* codigo, int max_codigos);
@@ -42,7 +43,12 @@ int bajaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_ap
 int ordenarPasajerosId(ePas pasajeros[], int max_pasajeros, int criterio);
 int ordenarPasajerosApellidoTipo(ePas pasajeros[], int max_pasajeros, int criterio);
 int ordenarPasajerosCodigoEstado(ePas pasajeros[], int max_pasajeros, int criterio);
+int listarPasajerosEstadoActivo(ePas pasajeros[], int max_pasajeros, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
 int informesPasajeros(ePas pasajeros[], int max_pasajeros, eCategoria categorias[], int max_categorias, eEstado estados[], int max_estados);
+int sumaPreciosPasajes(ePas pasajeros[], int max_pasajeros, float* pSumaPrecios, int* pCantPasajeros);
+int promedioPreciosPasajes(ePas pasajeros[], int max_pasajeros, float* pPromedioPasajes);
+int cantidadPasajerosPreciosEncimaPromedio(ePas pasajeros[], int max_pasajeros, int* pCantidadPasajeros);
+int informeTotalPromedioCantidadPasajeros( ePas pasajeros[], int max_pasajeros);
 
 //informes
 

@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "tp2.h"
 #include "categorias.h"
 #include "estadosVuelo.h"
 #include "input.h"
+#include "pasajeros.h"
 
 #define MAX_PASAJEROS 2000
 #define MAX_NOMBRE 30
@@ -21,10 +21,11 @@ int main() {
 	setbuf(stdout, NULL);
 
 	ePas pasajeros[MAX_PASAJEROS];
-	inicilizarPasajeros(pasajeros, MAX_PASAJEROS);
+	inicializarPasajeros(pasajeros, MAX_PASAJEROS);
+
 	eCategoria categorias[MAX_CATEGORIAS] = {
-			{101, "Primera"},
-			{102, "Ejecutivo"},
+			{101, "Ejecutivo"},
+			{102, "Primera"},
 			{103, "Turista"}
 	};
 
