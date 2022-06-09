@@ -7,6 +7,7 @@
 #include "categorias.h"
 #include "estadosVuelo.h"
 #include "input.h"
+#include "linkedList.h"
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -806,6 +807,7 @@ int bajaPasajero(ePas pasajeros[], int max_pasajeros, int max_nombre, int max_ap
 				scanf("%c", &confirmacion);
 
 				if(confirmacion == 's'){
+
 
 					pasajeros[indice].isEmpty = 1;
 					system("clear");

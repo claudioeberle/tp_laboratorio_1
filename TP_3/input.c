@@ -6,6 +6,60 @@
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+int cargaString (char* string, int tam_string, char* mensaje, char* mensajeError){
+	int retorno = 0;
+	int reintentos = 3;
+	int flag = 0;
+	char aux[tam_string];
+
+	if(string != NULL && mensaje != NULL && mensajeError != NULL && tam_string > 0){
+
+		do{
+			printf("%s", mensaje);
+			fpurge(stdin);
+			fgets(aux, tam_string, stdin);
+
+			if(quitarEnter(aux, tam_string)){
+
+				flag = 0;
+
+				for(int i = 0; *(aux + i) != '\0'; i++){
+
+					if(i != 0 && *(aux + i) == ' '){
+
+						continue;
+					}
+
+					if(!isalpha(*(aux + i))){
+
+						flag = 1;
+						reintentos --;
+						printf("%s", mensajeError);
+						break;
+					}
+				}
+
+				if(!flag){
+
+					retorno = 1;
+					capitalString (aux);
+					strncpy(string, aux, tam_string);
+					break;
+				}
+			}
+		}while(reintentos > 0);
+
+	}
+
+	if (!reintentos){
+
+		printf("\nNo se ha podido ingresar el dato.");
+	}
+	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 int get_int(char* mensaje, char* mensajeError, int min, int max, int* pNumero){
 
 	int retorno = 0;
@@ -104,10 +158,13 @@ int get_code(char* mensaje, char* mensajeError, char codigo[], int max_codigos){
 
 			if(quitarEnter (string, max_codigos) && validateCode(string))
 			{
+
 				for(int i = 0; string[i] != '\0'; i++)
 				{
+
 					if(isalpha(string[i]))
 					{
+
 						string[i] = toupper(string[i]);
 					}
 				}
@@ -131,19 +188,20 @@ int get_code(char* mensaje, char* mensajeError, char codigo[], int max_codigos){
 	}
 	return retorno;
 }
+
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 int validateCode(char* code)
 {
-	int retorno;
+	int retorno = 0;
 
-	if(code != NULL && strlen(code) != 8)
+	if(code != NULL && strlen(code) == 7)
 	{
 		for(int i = 0; *(code + i) != '\0'; i++)
 		{
-			if( (i >= 0 && i <= 2 && !isalpha(*(code + i))) ||
+			if( (i >= 0 && i <= 1 && !isalpha(*(code + i))) ||
 				(i >= 6 && i <= 7 && !isalpha(*(code + i))) ||
-				(i >= 3 && i <= 5 && !isdigit(*(code + i))))
+				(i >= 2 && i <= 5 && !isdigit(*(code + i))))
 			{
 				retorno = 0;
 				break;
@@ -156,8 +214,6 @@ int validateCode(char* code)
 	}
 	return retorno;
 }
-
-
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -279,25 +335,27 @@ int quitarEnter (char string[], int max_string){
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-int capitalString (char string[]){
+int capitalString (char* string){
 
 		int retorno = 0;
 
 		if( string != NULL){
 
-			for (int i = 0; string[i] != '\0'; i++){
+			for (int i = 0; *(string + i) != '\0'; i++)
+			{
 
 
-					string[i] = tolower(string[i]);
+					*(string + i) = tolower(*(string + i));
 			}
 
 			string [0] = toupper(string[0]);
 
-			for (int i = 0; string[i] != '\0'; i++){
+			for (int i = 0; *(string + i) != '\0'; i++)
+			{
 
-				if (string[i] == ' '){
+				if ((*(string + i)) == ' '){
 
-					string[i+1] = toupper(string[i+1]);
+					*(string + (i + 1)) = toupper(*(string + (i + 1)));
 				}
 			}
 
@@ -339,6 +397,47 @@ int getCharacter(char* mensaje, char* mensajeError, char* character){
 	}
 
 	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int menu(void){
+
+	int opcion;
+	int check;
+
+	do{
+
+		printf("\n---------------------------------\n");
+		printf(" SISTEMA DE GESTIÓN DE PASAJEROS \n");
+		printf("--------------------------------- \n\n");
+		printf("1.  Cargar los datos de los pasajeros en el archivo data.csv (MODO TEXTO)\n\n");
+		printf("2.  Cargar los datos de los pasajeros desde el archivo data.bin (MODO BINARIO)\n\n");
+		printf("3.  ALTA DE PASAJERO\n\n");
+		printf("4.  MODIFICAR PASAJERO\n\n");
+		printf("5.  BAJA DE PASAJERO\n\n");
+		printf("6.  LISTAR PASAJEROS\n\n");
+		printf("7.  ORDENAR PASAJEROS\n\n");
+		printf("8.  Guardar los datos de los pasajeros en el archivo data.csv (MODO TEXTO)\n\n");
+		printf("9.  Guardar los datos de los pasajeros en el archivo data.bin (MODO BINARIO)\n\n");
+		printf("10. SALIR\n\n");
+
+		printf("Elija una opción: ");
+		fpurge(stdin);
+		check = scanf("%d", &opcion);
+		printf("\n\n");
+
+
+		if(check != 1 || (opcion <1 && check == 1) || (opcion >10 && check == 1)){
+
+			system("clear");
+			printf("OPCIÓN INCORRECTA. Por favor ingrese una opción válida.\n\n");
+		}
+
+
+		}while(check != 1 && (opcion <1 || opcion >10));
+
+		return opcion;
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
