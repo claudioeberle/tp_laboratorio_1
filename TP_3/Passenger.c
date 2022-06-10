@@ -178,6 +178,7 @@ int Passenger_setEstadoVuelo(Passenger* this, char* estadoVuelo)
 		indiceEstadoVuelo(estadoVuelo, &indexEstado);
 
 		this->estadoVuelo = indexEstado;
+
 		retorno = 1;
 	}
 	return retorno;
@@ -199,6 +200,23 @@ int Passenger_getId(Passenger* this,int* id)
 	if(this != NULL && id != NULL)
 	{
 		*id = this->id;
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+int Passenger_getIdStr(Passenger* this,char* id)
+{
+	int retorno = 0;
+	int aux;
+
+	if(this != NULL && id != NULL)
+	{
+		Passenger_getId(this, &aux);
+		sprintf(id, "%d", aux);
 		retorno = 1;
 	}
 
@@ -241,7 +259,6 @@ int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo)
 	if(this != NULL && codigoVuelo != NULL)
 	{
 		strcpy(codigoVuelo, this->codigoVuelo);
-				retorno = 1;
 		retorno = 1;
 	}
 
@@ -264,7 +281,25 @@ int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero)
 }
 /*/////////////////////////////////////////////////////////////////////////////*/
 
-int Passenger_getPrecio(Passenger* this,float* precio)
+int Passenger_getTipoStr(Passenger* this,char* tipo)
+{
+	int retorno = 0;
+	int aux;
+
+	if(this != NULL && tipo != NULL)
+	{
+		Passenger_getTipoPasajero(this, &aux);
+		descripcionTipoPasajero(aux, tipo);
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+
+int Passenger_getPrecio(Passenger* this, int* precio)
 {
 	int retorno = 0;
 
@@ -280,6 +315,23 @@ int Passenger_getPrecio(Passenger* this,float* precio)
 
 /*/////////////////////////////////////////////////////////////////////////////*/
 
+int Passenger_getPrecioStr(Passenger* this, char* precio)
+{
+	int retorno = 0;
+	int aux;
+
+	if(this != NULL && precio != NULL)
+	{
+		Passenger_getPrecio(this, &aux);
+		sprintf(precio, "%d", aux);
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
 int Passenger_getEstadoVuelo(Passenger* this,int* estadoVuelo)
 {
 
@@ -290,6 +342,23 @@ int Passenger_getEstadoVuelo(Passenger* this,int* estadoVuelo)
 		*estadoVuelo = this->estadoVuelo;
 		retorno = 1;
 	}
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+int Passenger_getEstadoVueloStr(Passenger* this, char* estadoVuelo)
+{
+	int retorno = 0;
+	int aux;
+
+	if(this != NULL && estadoVuelo != NULL)
+	{
+		Passenger_getEstadoVuelo(this, &aux);
+		descripcionEstadoVuelo(aux, estadoVuelo);
+		retorno = 1;
+	}
+
 	return retorno;
 }
 

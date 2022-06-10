@@ -9,6 +9,32 @@
 #include "abm_passenger.h"
 
 
+
+int controller_loadIdFromBinary(char* path , int* nextId)
+{
+	int retorno = 0;
+
+	if(path != NULL && nextId != NULL)
+	{
+
+		FILE* pFile = fopen(path, "rb");
+
+		if(pFile == NULL)
+		{
+			perror("Error al leer el archivo de IDs\n");
+		}
+		else
+		{
+			fread(nextId, sizeof(int), 1, pFile);
+			retorno = 1;
+		}
+	}
+	return retorno;
+
+
+}
+
+
 /** \brief Carga los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
  * \param path char*
@@ -23,6 +49,11 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
 
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
+		if(ll_len(pArrayListPassenger) > 0)
+		{
+			printf("Usted está por sobreescribir empleados existentes.");
+
+		}
 
 		FILE* file = fopen(path, "r");
 
@@ -44,6 +75,9 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
 
     return retorno;
 }
+
+
+
 /** \brief Carga los datos de los pasajeros desde el archivo data.csv (modo binario).
  *
  * \param path char*
@@ -53,7 +87,31 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 {
-    return 1;
+	int retorno = 0;
+
+	if(path != NULL && pArrayListPassenger != NULL)
+	{
+		FILE* file =fopen(path, "rb");
+
+		if(file == NULL)
+		{
+			system("clear");
+			perror("ERROR");
+		}
+		else
+		{
+			parser_PassengerFromBinary(file, pArrayListPassenger);
+			retorno = 1;
+
+			system("clear");
+			printf("\n Se agregaron %d pasajeros al Sistema\n", ll_len(pArrayListPassenger));
+
+		}
+
+		fclose(file);
+
+	}
+    return retorno;
 }
 
 /** \brief Alta de pasajero
@@ -64,15 +122,14 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
  * \return int
  *
  */
-int controller_addPassenger(LinkedList* pArrayListPassenger)
+int controller_addPassenger(LinkedList* pArrayListPassenger, int* nextId)
 {
 	int retorno = 0;
 	char confirmacion;
 
-
 	Passenger* newPassenger = Passenger_new();
 
-	if(newPassenger == NULL)
+	if(newPassenger == NULL && nextId)
 	{
 		printf("No se pudo obtener memoria\n");
 	}
@@ -85,14 +142,8 @@ int controller_addPassenger(LinkedList* pArrayListPassenger)
 			printf("\n    ALTA DE PASAJERO      ");
 			printf("\n--------------------------\n");
 
-			if(ll_len(pArrayListPassenger) == 0)
-			{
-				newPassenger->id = 1;
-			}
-			else
-			{
-				proximoId(pArrayListPassenger, &newPassenger->id);
-			}
+
+			newPassenger->id = *nextId;
 
 			if( cargaString (newPassenger->nombre, 50, "\nNombre: ", "Dato Incorrecto. \n") &&
 				cargaString (newPassenger->apellido, 50, "\nApellido: ", "Dato Incorrecto. \n") &&
@@ -116,6 +167,7 @@ int controller_addPassenger(LinkedList* pArrayListPassenger)
 
 							ll_add(pArrayListPassenger, newPassenger);
 
+							(*nextId)++;
 
 							system("clear");
 							printf("\n********************\n");
@@ -169,6 +221,7 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 	char descTipoNuevo[25];
 	char codigoVuelo[10];
 	Passenger* pasajero = NULL;
+	int index = 0;
 
 	if(pArrayListPassenger != NULL)
 	{
@@ -180,18 +233,12 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 		if(controller_ListPassenger(pArrayListPassenger))
 		{
 
-			if(get_int("\nElija el ID del pasajero que quiere modificar: ", "Dato incorrecto", 1, ll_len(pArrayListPassenger), &id))
+			if(get_int("\nElija el ID del pasajero que quiere modificar: ", "Dato incorrecto", 1, ll_len(pArrayListPassenger), &id) &&
+				buscarPasajeroPorId(pArrayListPassenger, &index, id))
 			{
 
 				do{
-
-					pasajero = buscarPasajeroPorId(pArrayListPassenger, id);
-
-					/*
-					 * No logré descifrar por qué solo me permite encontrar pasajeros hasta el id 93
-					 * del 94 en adelante se pincha el programa
-					 * pero si busco ese pasajero por indice con el ll_get me lo trae y muestra sin problemas
-					 */
+					pasajero = (Passenger*) ll_get(pArrayListPassenger, index);
 
 					if(pasajero == NULL)
 					{
@@ -341,7 +388,6 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 									salir = 's';
 									system("clear");
 									break;
-
 						}
 					}
 
@@ -376,6 +422,7 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 	int pasId;
 	int index;
 	Passenger* pasajero = NULL;
+	int indexPas;
 
 
 	if(pArrayListPassenger != NULL)
@@ -386,9 +433,10 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 		printf("-------------------------------- \n");
 
 		if(controller_ListPassenger(pArrayListPassenger) &&
-		   get_int("\nElija el ID del pasajero que quiere dar de baja: ", "Dato incorrecto", 1, 10000, &pasId))
+		   get_int("\nElija el ID del pasajero que quiere dar de baja: ", "Dato incorrecto", 1, 10000, &pasId) &&
+		   buscarPasajeroPorId(pArrayListPassenger, &indexPas, pasId))
 		{
-			pasajero = buscarPasajeroPorId(pArrayListPassenger, pasId);
+			pasajero = (Passenger*) ll_get(pArrayListPassenger, indexPas);
 
 			if(pasajero == NULL)
 			{
@@ -410,13 +458,11 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 
 				if(confirmacion == 's')
 				{
-
 					index = ll_indexOf(pArrayListPassenger, pasajero);
 					ll_remove(pArrayListPassenger, index);
 					system("clear");
 					printf("\n->->-> Baja exitosa <-<-<-\n\n");
 					retorno = 1;
-
 				}
 				else
 				{
@@ -440,36 +486,25 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 int controller_ListPassenger(LinkedList* pArrayListPassenger)
 {
 	int retorno = 0;
-	int flag = 1;
-	//int cant = 0;
-
-	//printf("LISTADO 1\n");
 	if(pArrayListPassenger != NULL)
 	{
-
-		printf("\n LISTADO DE PASAJEROS      \n");
-		printf("--------------------------------------------------------------------------------------------------------------\n");
-		printf("  ID       Nombre              Apellido              Precio          Código          Tipo           Estado     \n");
-		printf("--------------------------------------------------------------------------------------------------------------\n");
-
-		//printf("LISTADO 2\n");
-
 		if(ll_len(pArrayListPassenger))
 		{
-			//printf("LISTADO 3\n");
+			printf("\n LISTADO DE PASAJEROS      \n");
+			printf("--------------------------------------------------------------------------------------------------------------\n");
+			printf("  ID  Nombre             Apellido                 Precio          Código          Tipo            Estado     \n");
+			printf("--------------------------------------------------------------------------------------------------------------\n");
 
 			for(int i=0; i < ll_len(pArrayListPassenger); i++)
 			{
 				mostrarPasajeroFila((Passenger*)ll_get(pArrayListPassenger, i));
-				//cant++;
-				//printf("LISTADO pasajero %d\n", cant);
-				flag = 0;
 				retorno = 1;
 			}
 		}
 		else
 		{
-			printf("No hay pasajeros en el sistema\n");
+			system("clear");
+			printf("\nNo hay pasajeros en el sistema\n");
 		}
 	}
 	return retorno;
@@ -498,24 +533,24 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 {
 	int retorno = 0;
 
-	FILE* file = fopen(path, "w");
-
-	if(file == NULL)
+	if( path != NULL && pArrayListPassenger != NULL)
 	{
-		perror("No se pudo conseguir memoria\n");
+		FILE* file = fopen(path, "w");
+
+		if(file == NULL)
+		{
+			perror("No se pudo conseguir memoria\n");
+		}
+		else if(passengerToText(file, pArrayListPassenger))
+		{
+			retorno = 1;
+			system("clear");
+			printf("\n Archivo de texto guardado con éxito\n");
+
+		}
+
+		fclose(file);
 	}
-	else
-	{
-
-		retorno = 1;
-
-		system("clear");
-		printf("\n Se agregaron %d pasajeros al Sistema\n", ll_len(pArrayListPassenger));
-
-	}
-
-	fclose(file);
-
     return retorno;
 }
 
@@ -528,6 +563,48 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 {
-    return 1;
+	int retorno = 0;
+
+	if(path != NULL && pArrayListPassenger != NULL)
+	{
+		FILE* file = fopen(path, "wb");
+
+		if(file == NULL)
+		{
+			perror("No se pudo conseguir memoria\n");
+		}
+		else if(passengerToBinary(file, pArrayListPassenger))
+		{
+			retorno = 1;
+			system("clear");
+			printf("\n Archivo de binario guardado con éxito\n");
+		}
+
+		fclose(file);
+	}
+    return retorno;
+}
+
+int controller_saveNextId(char* path, int* nextId)
+{
+	int retorno = 0;
+
+	if(path != NULL && nextId != NULL)
+	{
+		FILE* pFile = fopen(path, "wb");
+		if(pFile != NULL)
+		{
+			printf("%d\n", nextIdToBinary(pFile, nextId));
+
+
+			if(nextIdToBinary(pFile, nextId))
+			{
+				printf("Actualización exitosa de IDs\n");
+			}
+		}
+		fclose(pFile);
+
+	}
+	return retorno;
 }
 

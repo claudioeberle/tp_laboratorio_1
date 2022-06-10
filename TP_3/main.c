@@ -14,9 +14,16 @@ int main()
 
 	char option = 'n';
 
-    LinkedList* listaPasajeros = ll_newLinkedList();
+	int nextId = 0;
 
-    //Passenger*  unPasajero;
+	int flagReadTxt = 0;
+	int flagReadBin = 0;
+
+	int flagCambios = 1;
+
+
+
+    LinkedList* listaPasajeros = ll_newLinkedList();
 
     if(listaPasajeros == NULL)
     {
@@ -24,56 +31,129 @@ int main()
     	exit(1);
     }
 
-    //FILE* pFile = fopen("data.csv", "r");
-
-    //parser_PassengerFromText(pFile, listaPasajeros);
-
-
-
+    if(!controller_loadIdFromBinary("/Users/mistereberle/Desktop/workspace_1/tp3_mac/nextId.bin", &nextId))
+    {
+    	exit(1);
+    }
 
     do{
+
 
         switch(menu())
         {
             case 1:
-                controller_loadFromText("/Users/mistereberle/desktop/workspace_1/tp3_mac/data.csv",listaPasajeros);
+
+            	flagCambios = 1;
+
+            	if(flagReadTxt || flagReadBin)
+            	{
+            		system("clear");
+            		printf("Los Pasajeros de archivo ya han sido cargados\n");
+            	}
+            	else
+            	{
+					if(!controller_loadFromText("/Users/mistereberle/Desktop/workspace_1/tp3_mac/data.csv",listaPasajeros))
+					{
+						system("clear");
+						printf("\n\nHubo un error en la lectura del archivo\n");
+					}
+					else
+					{
+						flagReadTxt = 1;
+					}
+            	}
                 break;
 
             case 2:
-            	controller_loadFromBinary("data.bin" , listaPasajeros);
+
+            	flagCambios = 1;
+
+            	if(flagReadTxt || flagReadBin)
+				{
+            		system("clear");
+					printf("Los Pasajeros de archivo ya han sido cargados\n");
+				}
+				else
+				{
+					if(!controller_loadFromBinary("/Users/mistereberle/Desktop/workspace_1/tp3_mac/data.bin" , listaPasajeros))
+					{
+						system("clear");
+						printf("\n\nHubo un error en la lectura del archivo\n");
+					}
+					else
+					{
+						flagReadBin = 1;
+					}
+				}
 				break;
 
             case 3:
-            	controller_addPassenger(listaPasajeros);
+
+            	flagCambios = 1;
+
+            	controller_addPassenger(listaPasajeros, &nextId);
             	break;
 
             case 4:
+
+            	flagCambios = 1;
 
             	controller_editPassenger(listaPasajeros);
             	break;
 
             case 5:
+
+            	flagCambios = 1;
+
             	controller_removePassenger(listaPasajeros);
             	break;
 
             case 6:
+
+            	flagCambios = 1;
+
             	controller_ListPassenger(listaPasajeros);
             	break;
 
             case 7:
+
+            	flagCambios = 1;
+
             	controller_sortPassenger(listaPasajeros);
             	break;
 
             case 8:
-            	controller_saveAsText("datos.csv", listaPasajeros);
+
+            	flagCambios = 0;
+
+            	controller_saveAsText("/Users/mistereberle/Desktop/workspace_1/tp3_mac/data.csv", listaPasajeros);
             	break;
 
             case 9:
-            	controller_saveAsBinary("datos.bin", listaPasajeros);
+
+            	flagCambios = 0;
+
+            	controller_saveAsBinary("/Users/mistereberle/Desktop/workspace_1/tp3_mac/data.bin", listaPasajeros);
             	break;
 
             case 10:
-            	salir(&option);
+
+            	if(flagCambios)
+            	{
+            		system("clear");
+            		printf("Antes de salir debe guardar los cambios efectuados en un archivo.\n");
+            	}
+            	else
+            	{
+            		salir(&option);
+
+            		if(option == 's')
+            		{
+            			controller_saveNextId("/Users/mistereberle/Desktop/workspace_1/tp3_mac/nextId.bin", &nextId);
+
+            		}
+            	}
+
             	break;
         }
 

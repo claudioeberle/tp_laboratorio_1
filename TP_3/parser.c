@@ -34,7 +34,7 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	{
 		fscanf(pFile, "%[^,], %[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", id, nombre, apellido, precio, codigoVuelo, tipoPasajero, estadoVuelo);
 
-		//printf("4\n");
+		//printf("%s\n", estadoVuelo);
 
 		unPasajero = Passenger_newParametros(id, nombre, apellido, precio, tipoPasajero, codigoVuelo, estadoVuelo);
 
@@ -64,6 +64,113 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
  */
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
+	int retorno = 0;
+	Passenger* auxPas = NULL;
+	int cant = 0;
 
-    return 1;
+	if(pFile != NULL && pArrayListPassenger != NULL)
+	{
+
+		while(!feof(pFile))
+		{
+			auxPas = Passenger_new();
+
+			if(auxPas == NULL)
+			{
+				printf("No se consiguió memoria\n");
+			}
+			else
+			{
+				cant = fread(auxPas, sizeof(Passenger), 1, pFile);
+
+				if(cant < 1)
+				{
+					break;
+				}
+
+				ll_add(pArrayListPassenger, auxPas);
+				retorno = 1;
+			}
+		}
+	}
+
+    return retorno;
+}
+
+int passengerToText(FILE* pFile , LinkedList* pArrayListPassenger)
+{
+	int retorno = 0;
+
+	char buffer[7][100];
+
+	Passenger* auxPas = NULL;
+
+	if(pFile != NULL && pArrayListPassenger != NULL)
+	{
+
+		for(int i=0; i < ll_len(pArrayListPassenger); i++)
+		{
+			auxPas = (Passenger*) ll_get(pArrayListPassenger, i);
+
+			if(Passenger_getIdStr(auxPas, buffer[0]) &&
+			   Passenger_getNombre(auxPas, buffer[1]) &&
+			   Passenger_getApellido(auxPas, buffer[2]) &&
+			   Passenger_getPrecioStr(auxPas, buffer[3]) &&
+			   Passenger_getTipoStr(auxPas, buffer[4]) &&
+			   Passenger_getCodigoVuelo(auxPas, buffer[5]) &&
+			   Passenger_getEstadoVueloStr(auxPas, buffer[6]))
+			{
+
+				fprintf(pFile, "%s,%s,%s,%s,%s,%s,%s\n", buffer[0],
+														 buffer[1],
+														 buffer[2],
+														 buffer[3],
+														 buffer[4],
+														 buffer[5],
+														 buffer[6]);
+			}
+			else
+			{
+				Passenger_delete(auxPas);
+			}
+		}
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int passengerToBinary(FILE* pFile , LinkedList* pArrayListPassenger)
+{
+	int retorno = 0;
+	Passenger* auxPas = NULL;
+
+	if(pFile != NULL && pArrayListPassenger != NULL)
+	{
+		for(int i = 0; i < ll_len(pArrayListPassenger); i++)
+		{
+			mostrarPasajeroFila((Passenger*)ll_get(pArrayListPassenger, i));
+
+			auxPas = (Passenger*)ll_get(pArrayListPassenger, i);
+			fwrite(auxPas, sizeof(Passenger), 1, pFile);
+
+			retorno = 1;
+		}
+
+	}
+	return retorno;
+}
+
+int nextIdToBinary(FILE* pFile, int* nextId)
+{
+	int retorno = 0;
+
+	if(pFile != NULL && nextId != NULL)
+	{
+		fwrite(nextId, sizeof(int), 1, pFile);
+
+		retorno = 1;
+	}
+
+	return retorno;
 }

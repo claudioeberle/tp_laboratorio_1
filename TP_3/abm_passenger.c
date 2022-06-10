@@ -10,24 +10,20 @@
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-int proximoId(LinkedList* lista, int* proximoId)
+int definirId(LinkedList* listaPasajeros)
 {
-	int retorno = 0;
-	int tam_lista = 0;
-	Passenger* PasajeroPrevio;
+	int nextId = -1;
+	int mayor;
 
-	if(lista != NULL && proximoId != NULL && ll_len(lista))
+	if(listaPasajeros != NULL)
 	{
-		tam_lista = ll_len(lista);
+		buscarMayorId(listaPasajeros, &mayor);
 
-		PasajeroPrevio = ll_get(lista, (tam_lista-1));
-
-		*proximoId = (PasajeroPrevio->id + 1);
-
-		retorno = 1;
+		nextId = mayor + 1;
 	}
-	return retorno;
+	return nextId;
 }
+
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 int cargarPrecio(float* precio){
@@ -184,7 +180,7 @@ int mostrarPasajeroFila(Passenger* pasajero)
 		{
 			//printf("MOSTRAR PASAJEOR FILA %d\n", cant++);
 
-			printf(" %4d %-17s %-20s     $%6.2f      %-7s      %14s    %8s \n",
+			printf(" %4d %-17s %-20s     $%9.2f      %7s      %14s    %8s \n",
 
 																						   pasajero->id,
 																						   pasajero->nombre,
@@ -280,12 +276,12 @@ int descripcionEstadoVuelo(int estadoVuelo, char* descEstadoVuelo)
 				break;
 
 			case 3:
-				strcpy(descEstadoVuelo, "En_Horario");
+				strcpy(descEstadoVuelo, "En Horario");
 				retorno = 1;
 				break;
 
 			case 4:
-				strcpy(descEstadoVuelo, "En_Vuelo");
+				strcpy(descEstadoVuelo, "En Vuelo");
 				retorno = 1;
 				break;
 
@@ -303,36 +299,45 @@ int indiceEstadoVuelo(char* estadoVuelo, int* indiceEstadoVuelo)
 	int retorno = 0;
 	char* aterrizado = "Aterrizado";
 	char* demorado = "Demorado";
-	char* enHorario = "En_Horario";
-	char* enVuelo = "En_Vuelo";
+	char* enHorario = "En Horario";
+	char* enVuelo = "En Vuelo";
 
 	if(estadoVuelo != NULL && indiceEstadoVuelo != NULL)
 	{
-		if(strcmp(aterrizado, estadoVuelo) == 0)
+		if(strcmp(aterrizado, estadoVuelo) == -13)
 		{
+			//printf("%d\n", strcmp(aterrizado, estadoVuelo));
 			*indiceEstadoVuelo = 1;
 			retorno = 1;
 		}
-		else if(strcmp(demorado, estadoVuelo) == 0)
+		else if(strcmp(demorado, estadoVuelo) == -13)
 		{
+			//printf("%d\n", strcmp(demorado, estadoVuelo));
 			*indiceEstadoVuelo = 2;
 			retorno = 1;
 		}
-		else if(strcmp(enHorario, estadoVuelo) == 0)
+		else if(strcmp(enHorario, estadoVuelo) == -13)
 		{
+			//printf("%d\n", strcmp(enHorario, estadoVuelo));
 			*indiceEstadoVuelo = 3;
 			retorno = 1;
 		}
-		else if(strcmp(enVuelo, estadoVuelo) == 0)
+		else if(strcmp(enVuelo, estadoVuelo) == -13)
 		{
+			//printf("%d\n", strcmp(enVuelo, estadoVuelo));
 			*indiceEstadoVuelo = 4;
 			retorno = 1;
 		}
 		else
 		{
+			/*printf("aterrizado: %d\n", strcmp(aterrizado, estadoVuelo));
+			printf("demorado: %d\n", strcmp(demorado, estadoVuelo));
+			printf("en horario: %d\n", strcmp(enHorario, estadoVuelo));
+			printf("en vuelo: %d\n", strcmp(enVuelo, estadoVuelo));
+			*/
 			*indiceEstadoVuelo = 1;
 			retorno = 1;
-			printf("error en carga de estado de vuelo\n");
+			//printf("error en carga de estado de vuelo\n");
 
 		}
 	}
@@ -396,36 +401,48 @@ void despedir ()
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-Passenger* buscarPasajeroPorId(LinkedList* listaPasajeros, int id)
+
+int buscarPasajeroPorId(LinkedList* listadoPasajeros, int* posicionId, int id)
 {
-	Passenger* pasajero = NULL;
+    int retorno = 0;
+    int idAux = 0;
+    Passenger* auxPas = NULL;
 
-	int flag = 0;
-	//int cont = 0;
+    if(listadoPasajeros != NULL && posicionId != NULL && *posicionId >= 0 && id >= 1)
+    {
+        for(int i = 0; i < ll_len(listadoPasajeros); i++)
+        {
+            auxPas = ll_get(listadoPasajeros, i);
 
-	if(listaPasajeros != NULL && id > 0)
-	{
-		for(int i = 0; i < ll_len(listaPasajeros); i++)
-		{
-			//printf("%d\n", cont++);
+            if(auxPas != NULL)
+            {
+                pasajeroBuscarId(auxPas, &idAux);
 
-			pasajero = ll_get(listaPasajeros, i);
-
-			if(pasajero-> id == id)
-			{
-				//printf("Se encontró el pasajero\n");
-				flag = 1;
-				break;
-			}
-		}
-		if(!flag)
-		{
-			pasajero = NULL;
-			printf("no se encontró el pasajero\n");
-		}
-	}
-	return pasajero;
+                if(id == idAux)
+                {
+                    *posicionId = i;
+                    retorno = 1;
+                }
+            }
+        }
+    }
+    return retorno;
 }
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int pasajeroBuscarId(Passenger* this,int* resultado)
+{
+    int retorno = 0;
+
+    if(this != NULL && resultado != NULL)
+    {
+        *resultado = this->id;
+
+        retorno = 1;
+    }
+    return retorno;
+}
+
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 int menuModificar(){
@@ -468,6 +485,61 @@ do{
 }while(reintentos > 0);
 
 return retorno;
+}
+
+int buscarMayorId(LinkedList* pArrayListPassenger, int* id)
+{
+	int retorno = 0;
+	Passenger* auxPas = NULL;
+	int mayor;
+
+	if(pArrayListPassenger != NULL && id != NULL)
+	{
+
+		if(ll_len(pArrayListPassenger))
+		{
+
+			for(int i=0; i < ll_len(pArrayListPassenger); i++)
+			{
+				auxPas = (Passenger*) ll_get(pArrayListPassenger, i);
+
+				if(i == 0 || auxPas->id > mayor)
+				{
+					mayor = auxPas->id;
+				}
+			}
+			*id = mayor + 1;
+			retorno = 1;
+		}
+	}
+
+
+	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int validarId(LinkedList* pArrayListPassenger, int id)
+{
+	int retorno = 0;
+	int aux = 0;
+	Passenger* auxPas = NULL;
+
+	if(pArrayListPassenger != NULL)
+	{
+		for(int i=0; i < ll_len(pArrayListPassenger); i++)
+		{
+			auxPas = (Passenger*) ll_get(pArrayListPassenger, i);
+
+			aux = auxPas->id;
+
+			if(aux == id)
+			{
+				retorno = 1;
+			}
+		}
+	}
+	return retorno;
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
