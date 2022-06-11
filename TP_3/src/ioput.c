@@ -484,7 +484,7 @@ int cargarCodigoVuelo(char* codigo, int tam_codigos){
 	if(codigo != NULL && tam_codigos > 0){
 
 		printf("\nRespete el formato: 'AB1234C' (7 digitos)");
-		if(get_code("\nCódigo de Vuelo: ", "Dato incorrecto\n", codigo, tam_codigos)){
+		if(get_code("\nCódigo de Vuelo: ", "Dato incorrecto\n", codigo, tam_codigos) && validateCode(codigo)){
 
 			retorno = 1;
 		}
@@ -616,7 +616,7 @@ int mostrarPasajeroFila(Passenger* pasajero)
 		{
 			//printf("MOSTRAR PASAJEOR FILA %d\n", cant++);
 
-			printf(" %4d %-17s %-20s     $%9.2f      %-7s      %-14s    %-8s \n",
+			printf(" %4d %-20s %-20s  $%7.2f      %7s     %-14s    %-10s \n",
 
 																						   pasajero->id,
 																						   pasajero->nombre,
@@ -881,47 +881,50 @@ int pasajeroBuscarId(Passenger* this,int* resultado)
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-int menuModificar(){
+int menuModificar()
+{
 
-int retorno = 6;
-int opcion = 0;
-int check = 0;
-int reintentos = 2;
+	int retorno = 6;
+	int opcion = 0;
+	int check = 0;
+	int reintentos = 2;
 
-do{
+	do
+	{
 
-	printf("\n--------------------------------\n");
-	printf("   MODIFICACIÓN DE PASAJERO      \n");
-	printf("-------------------------------- \n\n");
-	printf("1. Nombre\n");
-	printf("2. Apellido\n");
-	printf("3. Precio\n");
-	printf("4. Código de Vuelo\n");
-	printf("5. Tipo de Pasajero\n");
-	printf("6. Salir\n");
+		printf("\n--------------------------------\n");
+		printf("   MODIFICACIÓN DE PASAJERO      \n");
+		printf("-------------------------------- \n\n");
+		printf("1. Nombre\n");
+		printf("2. Apellido\n");
+		printf("3. Precio\n");
+		printf("4. Código de Vuelo\n");
+		printf("5. Tipo de Pasajero\n");
+		printf("6. Salir\n");
 
-	printf("\n¿Qué desea modificar?: ");
-	fpurge(stdin);
-	check = scanf("%d", &opcion);
-	printf("\n\n");
-
-
-	if(!check || opcion < 1 || opcion > 6){
-
-		printf("OPCIÓN INCORRECTA. Por favor ingrese una opción válida.\n\n");
-		reintentos--;
-
-	}
-	else{
-			retorno = opcion;
-			break;
-	}
+		printf("\n¿Qué desea modificar?: ");
+		fpurge(stdin);
+		check = scanf("%d", &opcion);
+		printf("\n\n");
 
 
-}while(reintentos > 0);
+		if(!check || opcion < 1 || opcion > 6){
 
-return retorno;
+			printf("OPCIÓN INCORRECTA. Por favor ingrese una opción válida.\n\n");
+			reintentos--;
+
+		}
+		else{
+				retorno = opcion;
+				break;
+		}
+
+
+	}while(reintentos > 0);
+
+	return retorno;
 }
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 int buscarMayorId(LinkedList* pArrayListPassenger, int* id)
 {
@@ -976,6 +979,46 @@ int validarId(LinkedList* pArrayListPassenger, int id)
 		}
 	}
 	return retorno;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+int menuOrdenar ()
+{
+
+	int opcion = 0;
+	int check = 0;
+
+
+	do{
+
+		printf("\n--------------------------------\n");
+		printf("            ORDENAR             \n");
+		printf("-------------------------------- \n\n");
+		printf("1. ID\n");
+		printf("2. APELLIDO\n");
+		printf("3. TIPO Y CODIGO DE VUELO\n");
+		printf("4. CODIGO DE VUELO Y ID\n");
+
+		printf("\nOPCION: ");
+		fpurge(stdin);
+		check = scanf("%d", &opcion);
+		printf("\n\n");
+
+
+		if(check != 1 || opcion <1 || opcion >4)
+		{
+
+			system("clear");
+			printf("OPCIÓN INCORRECTA. Por favor ingrese una opción válida.\n\n");
+		}
+
+
+		}while(check != 1 || opcion <1 || opcion >4);
+
+		return opcion;
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

@@ -20,8 +20,8 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	char apellido[100];
 	char precio[100];
 	char codigoVuelo[8];
-	char estadoVuelo[100];
 	char tipoPasajero[100];
+	char estadoVuelo[100];
 
 	char falsaLectura[1000];
 
@@ -35,6 +35,11 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 
 
 		unPasajero = Passenger_newParametros(id, nombre, apellido, precio, tipoPasajero, codigoVuelo, estadoVuelo);
+
+		if(unPasajero == NULL)
+		{
+			printf("falló la carga del usuario con id: %s\n", id);
+		}
 
 		ll_add(pArrayListPassenger, unPasajero);
 
@@ -111,7 +116,7 @@ int passengerToText(FILE* pFile , LinkedList* pArrayListPassenger)
 			   Passenger_getTipoStr(auxPas, buffer[5]) &&
 			   Passenger_getEstadoVueloStr(auxPas, buffer[6]))
 			{
-
+				/*
 				printf("debbug PassengerToText parser:\n");
 				printf("idStr: %s\n", buffer[0]);
 				printf("nombre: %s\n", buffer[1]);
@@ -120,6 +125,7 @@ int passengerToText(FILE* pFile , LinkedList* pArrayListPassenger)
 				printf("codigo: %s\n", buffer[4]);
 				printf("tipo: %s\n", buffer[5]);
 				printf("estado: %s\n", buffer[6]);
+				*/
 
 
 				fprintf(pFile, "%s,%s,%s,%s,%s,%s,%s\n", buffer[0],
@@ -145,14 +151,21 @@ int passengerToBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
 	int retorno = 0;
 	Passenger* auxPas = NULL;
+	//int cont=0;
 
 	if(pFile != NULL && pArrayListPassenger != NULL)
 	{
+
 		for(int i = 0; i < ll_len(pArrayListPassenger); i++)
 		{
 			//mostrarPasajeroFila((Passenger*)ll_get(pArrayListPassenger, i));
 
+			//printf("PASER A BINARIO 1\n");
+			//printf("%d\n", cont++);
+
 			auxPas = (Passenger*)ll_get(pArrayListPassenger, i);
+
+			//printf("%x\n", auxPas);
 
 			fwrite(auxPas, sizeof(Passenger), 1, pFile);
 

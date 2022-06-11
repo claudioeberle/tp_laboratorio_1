@@ -34,6 +34,7 @@ Passenger* Passenger_newParametros(char* idStr,char* nombreStr,char* apellidoStr
 
 	Passenger* new_passenger = Passenger_new();
 
+	/*
 	 printf("%s\n", idStr);
 	 printf("%s\n", nombreStr);
 	 printf("%s\n", apellidoStr);
@@ -47,19 +48,28 @@ Passenger* Passenger_newParametros(char* idStr,char* nombreStr,char* apellidoStr
 	 printf("nombre parametro: %d\n", Passenger_setNombre(new_passenger, nombreStr));
 	 printf("apellido parametro: %d\n", Passenger_setApellido(new_passenger, apellidoStr));
 	 printf("precio parametro: %d\n", Passenger_setPrecio(new_passenger, atof(precioStr)));
-	 printf("tipo parametro: %d\n", Passenger_setTipoPasajero(new_passenger, tipoPasajeroStr));
 	 printf("codigo parametro: %d\n", Passenger_setCodigoVuelo(new_passenger, codigoVueloStr));
+	 printf("tipo parametro: %d\n", Passenger_setTipoPasajero(new_passenger, tipoPasajeroStr));
 	 printf("estado parametro: %d\n", Passenger_setEstadoVuelo(new_passenger, estadoVueloStr));
-
+*/
 
 	if( !(Passenger_setId(new_passenger, atoi(idStr)) &&
 		  Passenger_setNombre(new_passenger, nombreStr) &&
 		  Passenger_setApellido(new_passenger, apellidoStr) &&
 		  Passenger_setPrecio(new_passenger, atof(precioStr)) &&
-		  Passenger_setTipoPasajero(new_passenger, tipoPasajeroStr) &&
 		  Passenger_setCodigoVuelo(new_passenger, codigoVueloStr) &&
+		  Passenger_setTipoPasajero(new_passenger, tipoPasajeroStr) &&
 		  Passenger_setEstadoVuelo(new_passenger, estadoVueloStr)))
 	{
+/*
+		 printf("id parametro: %d\n", Passenger_setId(new_passenger, atoi(idStr)));
+		 printf("nombre parametro: %d\n", Passenger_setNombre(new_passenger, nombreStr));
+		 printf("apellido parametro: %d\n", Passenger_setApellido(new_passenger, apellidoStr));
+		 printf("precio parametro: %d\n", Passenger_setPrecio(new_passenger, atof(precioStr)));
+		 printf("codigo parametro: %d\n", Passenger_setCodigoVuelo(new_passenger, codigoVueloStr));
+		 printf("tipo parametro: %d\n", Passenger_setTipoPasajero(new_passenger, tipoPasajeroStr));
+		 printf("estado parametro: %d\n", Passenger_setEstadoVuelo(new_passenger, estadoVueloStr));
+*/
 		free(new_passenger);
 		new_passenger = NULL;
 		printf("ROMPE EL PASSENGER NEW PARAMETROS!\n");
@@ -89,7 +99,7 @@ int Passenger_setNombre(Passenger* this,char* nombre)
 	int retorno = 0;
 	char name[50];
 
-	if(this != NULL && nombre != NULL && strlen(nombre) < 50 && strlen(nombre) > 2)
+	if(this != NULL && nombre != NULL && strlen(nombre) < 50 && strlen(nombre) > 1)
 	{
 		strcpy(name, nombre);
 		capitalString(name);
@@ -129,7 +139,7 @@ int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo)
 	if(this != NULL && codigoVuelo != NULL)
 	{
 		strncpy(this->codigoVuelo, codigoVuelo, 8);
-		printf("set CODIGO\n");
+		//printf("set CODIGO\n");
 		retorno = 1;
 	}
 
@@ -159,14 +169,7 @@ int Passenger_setTipoPasajero(Passenger* this, char* tipoPasajero)
 			this->tipoPasajero = 3;
 			retorno = 1;
 		}
-		else
-		{
-			printf("stcmp FirstClass: %d\n", strcmp(tipoPasajero, "FirstClass"));
-			printf("stcmp ExecutiveClass: %d\n", strcmp(tipoPasajero, "ExecutiveClass"));
-			printf("stcmp EconomyClass: %d\n", strcmp(tipoPasajero, "EconomyClass"));
-			this->tipoPasajero = 1;
-			retorno = 1;
-		}
+
 	}
 	return retorno;
 
@@ -199,9 +202,9 @@ int Passenger_setEstadoVuelo(Passenger* this, char* estadoVuelo)
 
 	if(this != NULL && estadoVuelo != NULL)
 	{
-		printf("setEstadoVuelo1...\n");
+		//printf("setEstadoVuelo1...\n");
 		indiceEstadoVuelo(estadoVuelo, &indexEstado);
-		printf("setEstadoVuelo2...\n");
+		//printf("setEstadoVuelo2...\n");
 
 		this->estadoVuelo = indexEstado;
 
@@ -392,3 +395,113 @@ int Passenger_getEstadoVueloStr(Passenger* this, char* estadoVuelo)
 
 /*/////////////////////////////////////////////////////////////////////////////*/
 
+int passengerSortById(void* a, void* b)
+{
+	int retorno = 0;
+
+	if(a != NULL && b != NULL)
+	{
+		Passenger* pas1 = (Passenger*)a;
+		Passenger* pas2 = (Passenger*)b;
+
+		if(pas1->id == pas2->id)
+		{
+			retorno = 0;
+		}
+		else if(pas1->id > pas2->id)
+		{
+			retorno = 1;
+		}
+		else
+		{
+			retorno = -1;
+		}
+	}
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+int passengerSortByApellido(void* a, void* b)
+{
+	int retorno = 0;
+
+	if(a != NULL && b != NULL)
+	{
+		Passenger* pas1 = (Passenger*)a;
+		Passenger* pas2 = (Passenger*)b;
+
+		if(strcmp(pas1->apellido, pas2->apellido) == 0)
+		{
+			retorno = 0;
+		}
+		else if(strcmp(pas1->apellido, pas2->apellido) > 0)
+		{
+			retorno = 1;
+		}
+		else
+		{
+			retorno = -1;
+		}
+
+	}
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+int passengerSortByCodigo(void* a, void* b)
+{
+	int retorno = 0;
+
+	if(a != NULL && b != NULL)
+	{
+		Passenger* pas1 = (Passenger*)a;
+		Passenger* pas2 = (Passenger*)b;
+
+		if(strcmp(pas1->codigoVuelo, pas2->codigoVuelo) == 0)
+		{
+			retorno = 0;
+		}
+		else if(strcmp(pas1->codigoVuelo, pas2->codigoVuelo) > 0)
+		{
+			retorno = 1;
+		}
+		else
+		{
+			retorno = -1;
+		}
+
+	}
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+
+int passengerSortByTipo(void* a, void* b)
+{
+	int retorno = 0;
+
+	if(a != NULL && b != NULL)
+	{
+		Passenger* pas1 = (Passenger*)a;
+		Passenger* pas2 = (Passenger*)b;
+
+		if(pas1->tipoPasajero == pas2->tipoPasajero)
+		{
+			retorno = 0;
+		}
+		else if(pas1->tipoPasajero > pas2->tipoPasajero)
+		{
+			retorno = 1;
+		}
+		else
+		{
+			retorno = -1;
+		}
+	}
+	return retorno;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/

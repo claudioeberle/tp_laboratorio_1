@@ -61,7 +61,8 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
 			retorno = 1;
 
 			system("clear");
-			printf("\n Se agregaron %d pasajeros al Sistema\n", ll_len(pArrayListPassenger));
+			ll_sort(pArrayListPassenger, passengerSortById, 1);
+			printf("\n Se agregaron pasajeros al Sistema\n");
 
 		}
 		fclose(file);
@@ -98,7 +99,8 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 			retorno = 1;
 
 			system("clear");
-			printf("\n Se agregaron %d pasajeros al Sistema\n", ll_len(pArrayListPassenger));
+			ll_sort(pArrayListPassenger, passengerSortById, 1);
+			printf("\n Se agregaron pasajeros al Sistema\n");
 
 		}
 
@@ -136,58 +138,92 @@ int controller_addPassenger(LinkedList* pArrayListPassenger, int* nextId)
 			printf("\n    ALTA DE PASAJERO      ");
 			printf("\n--------------------------\n");
 
-
 			newPassenger->id = *nextId;
 
-			if( cargaString (newPassenger->nombre, 50, "\nNombre: ", "Dato Incorrecto. \n") &&
-				cargaString (newPassenger->apellido, 50, "\nApellido: ", "Dato Incorrecto. \n") &&
-				cargarPrecio(&newPassenger->precio) &&
-				cargarCodigoVuelo(newPassenger->codigoVuelo, 10) &&
-				cargarTipoPasajero(&newPassenger->tipoPasajero) &&
-				cargarEstadoVuelo(&newPassenger->estadoVuelo))
+			printf("Id: %d\n", newPassenger->id);
+
+			if( cargaString (newPassenger->nombre, 50, "\nNombre: ", "Dato Incorrecto. \n"))
+			{
+				if(cargaString (newPassenger->apellido, 50, "\nApellido: ", "Dato Incorrecto. \n"))
 				{
-
-					system("clear");
-					printf("\n--------------------------");
-					printf("\n     NUEVO  PASAJERO      ");
-					printf("\n--------------------------");
-
-					mostrarPasajero(newPassenger);
-
-					if( getCharacter("\nConfirmar carga de nuevo pasajero (s): ","Dato Incorrecto", &confirmacion))
+					if(cargarPrecio(&newPassenger->precio))
 					{
-						if(confirmacion == 's' || confirmacion == 'S')
+						if(cargarCodigoVuelo(newPassenger->codigoVuelo, 10))
 						{
+							if(cargarTipoPasajero(&newPassenger->tipoPasajero))
+							{
+								if(cargarEstadoVuelo(&newPassenger->estadoVuelo))
+								{
 
-							ll_add(pArrayListPassenger, newPassenger);
+									system("clear");
+									printf("\n--------------------------");
+									printf("\n     NUEVO  PASAJERO      ");
+									printf("\n--------------------------");
 
-							(*nextId)++;
+									mostrarPasajero(newPassenger);
 
-							system("clear");
-							printf("\n********************\n");
-							printf("\n   CARGA EXITOSA   \n\n");
-							printf("********************\n");
+									if( getCharacter("\nConfirmar carga de nuevo pasajero (s): ","Dato Incorrecto", &confirmacion))
+									{
+										if(confirmacion == 's' || confirmacion == 'S')
+										{
 
-							retorno = 1;
+											ll_add(pArrayListPassenger, newPassenger);
+
+											(*nextId)++;
+
+											system("clear");
+											printf("\n********************\n");
+											printf("\n   CARGA EXITOSA   \n\n");
+											printf("********************\n");
+
+											retorno = 1;
+										}
+										else{
+
+											system("clear");
+											printf("\n********************\n");
+											printf("\n  CARGA CANCELADA \n\n");
+											printf("********************\n");
+
+										}
+									}
+								}
+								else
+								{
+									system("clear");
+									printf("Error en la carga.-\n\n\n********************\n\n  CARGA CANCELADA \n\n********************\n");
+								}
+
+							}
+							else
+							{
+								system("clear");
+								printf("Error en la carga.-\n\n\n********************\n\n  CARGA CANCELADA \n\n********************\n");
+							}
 						}
-
-						else{
-
+						else
+						{
 							system("clear");
-							printf("\n********************\n");
-							printf("\n  CARGA CANCELADA \n\n");
-							printf("********************\n");
-
+							printf("Error en la carga.-\n\n\n********************\n\n  CARGA CANCELADA \n\n********************\n");
 						}
+					}
+					else
+					{
+						system("clear");
+						printf("Error en la carga.-\n\n\n********************\n\n  CARGA CANCELADA \n\n********************\n");
 					}
 				}
 				else
-				{	system("clear");
-					printf("Error en la carga.-\n\n");
-					printf("\n********************\n");
-					printf("\n  CARGA CANCELADA \n\n");
-					printf("********************\n");
+				{
+					system("clear");
+					printf("Error en la carga.-\n\n\n********************\n\n  CARGA CANCELADA \n\n********************\n");
 				}
+			}
+			else
+			{
+				system("clear");
+				printf("Error en la carga.-\n\n\n********************\n\n  CARGA CANCELADA \n\n********************\n");
+			}
 		}
 	}
 	return retorno;
@@ -493,7 +529,7 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger)
 		{
 			printf("\n LISTADO DE PASAJEROS      \n");
 			printf("--------------------------------------------------------------------------------------------------------------\n");
-			printf("  ID  Nombre             Apellido                 Precio          Código          Tipo            Estado     \n");
+			printf("  ID  Nombre             Apellido                 Precio         Código        Tipo             Estado     \n");
 			printf("--------------------------------------------------------------------------------------------------------------\n");
 
 			for(int i=0; i < ll_len(pArrayListPassenger); i++)
@@ -520,7 +556,63 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger)
  */
 int controller_sortPassenger(LinkedList* pArrayListPassenger)
 {
-    return 1;
+	int retorno = 0;
+	int criterio;
+
+	if(pArrayListPassenger != NULL)
+	{
+		if(ll_len(pArrayListPassenger) > 1)
+		{
+			switch(menuOrdenar()){
+
+					case 1:
+
+						printf("Criterios:\n\nASCENDENTE: 1\nDESCENDENTE: 0\n\n");
+						if(get_int("Criterio: ", "**Dato Incorrecto**\n", 0, 1, &criterio))
+						{
+							ll_sort(pArrayListPassenger, passengerSortById, criterio);
+						}
+						break;
+
+					case 2:
+
+						printf("Criterios:\n\nASCENDENTE: 1\nDESCENDENTE: 0\n\n");
+						if(get_int("Criterio: ", "**Dato Incorrecto**\n", 0, 1, &criterio))
+						{
+							ll_sort(pArrayListPassenger, passengerSortByApellido, criterio);
+						}
+						break;
+
+					case 3:
+
+						printf("Criterios:\n\nASCENDENTE: 1\nDESCENDENTE: 0\n\n");
+						if(get_int("Criterio: ", "**Dato Incorrecto**\n", 0, 1, &criterio))
+						{
+							ll_sort(pArrayListPassenger, passengerSortByTipo, criterio);
+							ll_sort(pArrayListPassenger, passengerSortByCodigo, criterio);
+						}
+						break;
+					case 4:
+
+						printf("Criterios:\n\nASCENDENTE: 1\nDESCENDENTE: 0\n\n");
+						if(get_int("Criterio: ", "**Dato Incorrecto**\n", 0, 1, &criterio))
+						{
+							ll_sort(pArrayListPassenger, passengerSortByTipo, criterio);
+							ll_sort(pArrayListPassenger, passengerSortByCodigo, criterio);
+						}
+						break;
+
+			}
+		}
+		else
+		{
+			system("clear");
+			printf("\nNo hay suficientes Pasajeros ingresados en sistema para la acción seleccionado.\n");
+		}
+
+
+	}
+    return retorno;
 }
 
 /** \brief Guarda los datos de los pasajeros en el archivo data.csv (modo texto).
@@ -568,17 +660,24 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
+		//printf("CONTROLLER A BINARIO 0\n");
+
 		FILE* file = fopen(path, "wb");
+
+		//printf("CONTROLLER A BINARIO 1\n");
 
 		if(file == NULL)
 		{
 			perror("No se pudo conseguir memoria\n");
 		}
-		else if(passengerToBinary(file, pArrayListPassenger))
+		else
 		{
-			retorno = 1;
-			system("clear");
-			printf("\n Archivo de binario guardado con éxito\n");
+			if(passengerToBinary(file, pArrayListPassenger))
+			{
+				retorno = 1;
+				system("clear");
+				printf("\n Archivo de binario guardado con éxito.\n");
+			}
 		}
 
 		fclose(file);
@@ -595,9 +694,6 @@ int controller_saveNextId(char* path, int* nextId)
 		FILE* pFile = fopen(path, "wb");
 		if(pFile != NULL)
 		{
-			printf("%d\n", nextIdToBinary(pFile, nextId));
-
-
 			if(nextIdToBinary(pFile, nextId))
 			{
 				printf("Actualización exitosa de IDs\n");

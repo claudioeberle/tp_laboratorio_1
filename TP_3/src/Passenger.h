@@ -10,17 +10,21 @@ typedef struct
 	char nombre[50];
 	char apellido[50];
 	float precio;
-	int tipoPasajero;
 	char codigoVuelo[8];
+	int tipoPasajero;
 	int estadoVuelo;
 
 }Passenger;
 
-
+//constructores
 Passenger* Passenger_new();
 Passenger* Passenger_newParametros(char* idStr,char* nombreStr,char* apellidoStr,char* precioStr, char* tipoPasajeroStr, char* codigoVueloStr, char* estadoVueloStr);
 
+//destructor
+
 void Passenger_delete( Passenger* Passenger);
+
+//setters y getters
 
 int Passenger_setId(Passenger* this,int id);
 int Passenger_getId(Passenger* this,int* id);
@@ -46,6 +50,13 @@ int Passenger_getPrecioStr(Passenger* this, char* precio);
 int Passenger_setEstadoVuelo(Passenger* this, char* estadoVuelo);
 int Passenger_getEstadoVuelo(Passenger* this, int* estadoVuelo);
 int Passenger_getEstadoVueloStr(Passenger* this, char* estadoVuelo);
+
+//sorters
+
+int passengerSortById(void* a, void* b);
+int passengerSortByApellido(void* a, void* b);
+int passengerSortByTipo(void* a, void* b);
+int passengerSortByCodigo(void* a, void* b);
 
 
 #endif /* PASSENGER_H_ */

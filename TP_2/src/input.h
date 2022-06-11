@@ -21,4 +21,5 @@ int esFloat(char string[], int max_string);
 int quitarEnter (char string[], int max_string);
 int capitalString (char string[]);
 int getCharacter(char* mensaje, char* mensajeError, char* character);
+int menuOrdenar ();
 

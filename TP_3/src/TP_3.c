@@ -14,7 +14,7 @@ int main()
 
 	char option = 'n';
 
-	int nextId = 0;
+	int nextId = 1001;
 
 	int flagReadTxt = 0;
 	int flagReadBin = 0;
@@ -31,11 +31,12 @@ int main()
     	exit(1);
     }
 
-    if(!controller_loadIdFromBinary("/Users/mistereberle/eclipse-workspace-GENERAL/TP_3/nextId.bin", &nextId))
+    if(!controller_loadIdFromBinary("./nextId.bin", &nextId))
     {
     	exit(1);
     }
 
+    system("clear");
     do{
 
 
@@ -43,7 +44,7 @@ int main()
         {
             case 1:
 
-            	if(!controller_loadFromText("/Users/mistereberle/eclipse-workspace-GENERAL/TP_3/data.csv",listaPasajeros))
+            	if(!controller_loadFromText("./data.csv",listaPasajeros))
 				{
 					system("clear");
 					printf("\n\nHubo un error en la lectura del archivo\n");
@@ -57,7 +58,7 @@ int main()
 
             case 2:
 
-				if(!controller_loadFromBinary("/Users/mistereberle/eclipse-workspace-GENERAL/TP_3/data.bin" , listaPasajeros))
+				if(!controller_loadFromBinary("./data.bin" , listaPasajeros))
 				{
 					system("clear");
 					printf("\n\nHubo un error en la lectura del archivo\n");
@@ -108,14 +109,14 @@ int main()
 
             	flagCambios = 0;
 
-            	controller_saveAsText("/Users/mistereberle/eclipse-workspace-GENERAL/TP_3/data.csv", listaPasajeros);
+            	controller_saveAsText("data.csv", listaPasajeros);
             	break;
 
             case 9:
 
             	flagCambios = 0;
 
-            	controller_saveAsBinary("/Users/mistereberle/eclipse-workspace-GENERAL/TP_3/data.bin", listaPasajeros);
+            	controller_saveAsBinary("data.bin", listaPasajeros);
             	break;
 
             case 10:
@@ -131,8 +132,8 @@ int main()
 
             		if(option == 's')
             		{
-            			controller_saveNextId("/Users/mistereberle/eclipse-workspace-GENERAL/TP_3/nextId.bin", &nextId);
-
+            			controller_saveNextId("nextId.bin", &nextId);
+            			ll_deleteLinkedList(listaPasajeros);
             		}
             	}
 

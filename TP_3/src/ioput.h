@@ -40,3 +40,4 @@ void saludar ();
 void despedir ();
 int menuModificar();
 int validarId(LinkedList* pArrayListPassenger, int id);
+int menuOrdenar(void);
