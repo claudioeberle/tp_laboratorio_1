@@ -14,6 +14,7 @@
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 {
 	int retorno = 0;
+	int cant = 0;
 
 	char id[100];
 	char nombre[100];
@@ -42,10 +43,13 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 		}
 
 		ll_add(pArrayListPassenger, unPasajero);
+		cant++;
 
 		retorno = 1;
 
 	}
+	system("clear");
+	printf("\n Se agregaron %d pasajeros al Sistema\n", cant);
     return retorno;
 }
 
@@ -59,6 +63,8 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
 	int retorno = 0;
+	int total = 0;
+
 	Passenger* auxPas = NULL;
 	int cant = 0;
 
@@ -83,11 +89,13 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 				}
 
 				ll_add(pArrayListPassenger, auxPas);
+				total++;
 				retorno = 1;
 			}
 		}
 	}
-
+	system("clear");
+	printf("\n Se agregaron %d pasajeros al Sistema.\n", total);
     return retorno;
 }
 

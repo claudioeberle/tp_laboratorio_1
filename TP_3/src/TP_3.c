@@ -7,6 +7,16 @@
 #include "parser.h"
 
 
+/*
+ * PROFES, SOLO QUIERO COMENTARLES QUE AL HACER LOS SORT DE LA OPCION 7
+ * PARECE QUE SE CUELGA EL CODIGO PERO NO ES ASÍ
+ * SOLO TARDA EN PROCESAR, QUIZÁS SEA SOLO MI COMPU
+ * PERO LES AVISO POR LAS DUDAS XQ YO ESTUVE VOLVIENDOME LOCO INTENTANDO DESCIFRAR
+ * POR QUÉ ROMPÍA HASTA QUE ME DI CUENTA DE QUE SI ESPERABA APROX 10/15 SEG
+ * TERMINA DE ORDENAR Y VUELVE A LA VIDA SOLITO!!!
+ */
+
+
 
 int main()
 {
@@ -43,30 +53,45 @@ int main()
         switch(menu())
         {
             case 1:
+            	if(flagReadTxt || flagReadBin)
+            	{
+            		system("clear");
+            		printf("Ya han sido cargados los pasajeros de archivo.\n");
+            	}
+            	else
+            	{
 
-            	if(!controller_loadFromText("./data.csv",listaPasajeros))
-				{
-					system("clear");
-					printf("\n\nHubo un error en la lectura del archivo\n");
-				}
-				else
-				{
-					flagReadTxt = 1;
-					flagCambios = 1;
-				}
+					if(!controller_loadFromText("./data.csv",listaPasajeros))
+					{
+						system("clear");
+						printf("\n\nHubo un error en la lectura del archivo\n");
+					}
+					else
+					{
+						flagReadTxt = 1;
+						flagCambios = 1;
+					}
+            	}
                 break;
 
             case 2:
-
-				if(!controller_loadFromBinary("./data.bin" , listaPasajeros))
+            	if(flagReadTxt || flagReadBin)
 				{
-					system("clear");
-					printf("\n\nHubo un error en la lectura del archivo\n");
+            		system("clear");
+					printf("Ya han sido cargados los pasajeros de archivo.\n");
 				}
 				else
 				{
-					flagReadBin = 1;
-					flagCambios = 1;
+					if(!controller_loadFromBinary("./data.bin" , listaPasajeros))
+					{
+						system("clear");
+						printf("\n\nHubo un error en la lectura del archivo\n");
+					}
+					else
+					{
+						flagReadBin = 1;
+						flagCambios = 1;
+					}
 				}
 				break;
 
@@ -93,14 +118,10 @@ int main()
 
             case 6:
 
-            	flagCambios = 1;
-
             	controller_ListPassenger(listaPasajeros);
             	break;
 
             case 7:
-
-            	flagCambios = 1;
 
             	controller_sortPassenger(listaPasajeros);
             	break;

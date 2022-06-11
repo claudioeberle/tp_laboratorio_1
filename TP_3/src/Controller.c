@@ -59,11 +59,6 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
 		{
 			parser_PassengerFromText(file, pArrayListPassenger);
 			retorno = 1;
-
-			system("clear");
-			ll_sort(pArrayListPassenger, passengerSortById, 1);
-			printf("\n Se agregaron pasajeros al Sistema\n");
-
 		}
 		fclose(file);
 	}
@@ -97,11 +92,6 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 		{
 			parser_PassengerFromBinary(file, pArrayListPassenger);
 			retorno = 1;
-
-			system("clear");
-			ll_sort(pArrayListPassenger, passengerSortById, 1);
-			printf("\n Se agregaron pasajeros al Sistema\n");
-
 		}
 
 		fclose(file);
