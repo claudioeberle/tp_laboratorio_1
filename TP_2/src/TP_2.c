@@ -21,6 +21,7 @@ int main() {
 	setbuf(stdout, NULL);
 
 	ePas pasajeros[MAX_PASAJEROS];
+
 	inicializarPasajeros(pasajeros, MAX_PASAJEROS);
 
 	eCategoria categorias[MAX_CATEGORIAS] = {

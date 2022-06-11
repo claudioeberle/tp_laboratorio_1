@@ -5,8 +5,8 @@
 #include "LinkedList.h"
 #include "Passenger.h"
 #include "Controller.h"
-#include "input.h"
-#include "abm_passenger.h"
+#include "ioput.h"
+
 
 
 
@@ -49,12 +49,6 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
 
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
-		if(ll_len(pArrayListPassenger) > 0)
-		{
-			printf("Usted está por sobreescribir empleados existentes.");
-
-		}
-
 		FILE* file = fopen(path, "r");
 
 		if(file == NULL)
@@ -233,7 +227,7 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 		if(controller_ListPassenger(pArrayListPassenger))
 		{
 
-			if(get_int("\nElija el ID del pasajero que quiere modificar: ", "Dato incorrecto", 1, ll_len(pArrayListPassenger), &id) &&
+			if(get_int("\nElija el ID del pasajero que quiere modificar: ", "Dato incorrecto", 1, 10000, &id) &&
 				buscarPasajeroPorId(pArrayListPassenger, &index, id))
 			{
 
@@ -339,7 +333,7 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 
 										if(confirmacion == 's'){
 
-											strncpy(pasajero->codigoVuelo, codigoVuelo, 10);
+											strcpy(pasajero->codigoVuelo, codigoVuelo);
 											system("clear");
 											printf("\n\n->->-> MODIFICACIÓN EXITOSA <-<-<-\n");
 										}
@@ -432,45 +426,52 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 		printf("      BAJA   DE   PASAJERO       \n");
 		printf("-------------------------------- \n");
 
-		if(controller_ListPassenger(pArrayListPassenger) &&
-		   get_int("\nElija el ID del pasajero que quiere dar de baja: ", "Dato incorrecto", 1, 10000, &pasId) &&
-		   buscarPasajeroPorId(pArrayListPassenger, &indexPas, pasId))
+		if(controller_ListPassenger(pArrayListPassenger))
 		{
-			pasajero = (Passenger*) ll_get(pArrayListPassenger, indexPas);
+		   if(get_int("\nElija el ID del pasajero que quiere dar de baja: ", "Dato incorrecto", 1, 10000, &pasId) &&
+		   buscarPasajeroPorId(pArrayListPassenger, &indexPas, pasId))
+		   {
+				pasajero = (Passenger*) ll_get(pArrayListPassenger, indexPas);
 
-			if(pasajero == NULL)
-			{
-				printf("Pasajero no encontrado\n");
-			}
-			else
-			{
-
-				system("clear");
-				printf("\n--------------------------------\n");
-				printf("      BAJA   DE   PASAJERO       \n");
-				printf("-------------------------------- \n\n");
-
-				mostrarPasajero(pasajero);
-
-				printf("\nPor favor confirmar la baja (s): ");
-				fpurge(stdin);
-				scanf("%c", &confirmacion);
-
-				if(confirmacion == 's')
+				if(pasajero == NULL)
 				{
-					index = ll_indexOf(pArrayListPassenger, pasajero);
-					ll_remove(pArrayListPassenger, index);
-					system("clear");
-					printf("\n->->-> Baja exitosa <-<-<-\n\n");
-					retorno = 1;
+					printf("Pasajero no encontrado\n");
 				}
 				else
 				{
-					system("clear");
-					printf("\n->->-> Baja cancelada <-<-<-\n\n");
 
+					system("clear");
+					printf("\n--------------------------------\n");
+					printf("      BAJA   DE   PASAJERO       \n");
+					printf("-------------------------------- \n\n");
+
+					mostrarPasajero(pasajero);
+
+					printf("\nPor favor confirmar la baja (s): ");
+					fpurge(stdin);
+					scanf("%c", &confirmacion);
+
+					if(confirmacion == 's')
+					{
+						index = ll_indexOf(pArrayListPassenger, pasajero);
+						ll_remove(pArrayListPassenger, index);
+						system("clear");
+						printf("\n->->-> Baja exitosa <-<-<-\n\n");
+						retorno = 1;
+					}
+					else
+					{
+						system("clear");
+						printf("\n->->-> Baja cancelada <-<-<-\n\n");
+
+					}
 				}
-			}
+		   }
+		   else
+		   {
+				system("clear");
+				printf("\n\nRevise el dato ingresado y vuelva a intentar\n.");
+		   }
 		}
 	}
 	return retorno;

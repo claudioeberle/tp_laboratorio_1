@@ -11,12 +11,11 @@ typedef struct
 	char apellido[50];
 	float precio;
 	int tipoPasajero;
-	char codigoVuelo[10];
+	char codigoVuelo[8];
 	int estadoVuelo;
 
 }Passenger;
 
-#include "abm_passenger.h"
 
 Passenger* Passenger_new();
 Passenger* Passenger_newParametros(char* idStr,char* nombreStr,char* apellidoStr,char* precioStr, char* tipoPasajeroStr, char* codigoVueloStr, char* estadoVueloStr);
