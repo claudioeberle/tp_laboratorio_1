@@ -695,3 +695,46 @@ int controller_saveNextId(char* path, int* nextId)
 	return retorno;
 }
 
+int controller_backup(LinkedList* listado)
+{
+	int retorno = 0;
+	char path[25];
+	char completo = 's';
+	int FirstId;
+	int LastId;
+
+	if(listado != NULL)
+	{
+		printf("\n------------\n");
+		printf("  BACKUP\n");
+		printf("------------\n\n");
+
+		cargaString(path, 25, "Ingrese la ruta y nombre de archivo de backup: ", "Dato incorrecto\n");
+
+		FILE* fbackup = fopen(path, "wb");
+
+		if(fbackup == NULL)
+		{
+			printf("No se pudo crear el archivo\n");
+		}
+		else
+		{
+			getCharacter("Desea copiar el listado completo? (s/n): ", "Dato incorrecto", &completo);
+
+			if(completo != 's')
+			{
+				printf("A continuación, ingrese los IDs de INICIO y CORTE del listado");
+
+			}
+
+		}
+
+
+
+
+
+		retorno = 1;
+	}
+	return retorno;
+}
+
